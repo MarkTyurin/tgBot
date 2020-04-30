@@ -7,8 +7,51 @@
     <groupId>GameBot</groupId>
     <artifactId>GameBot</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <!-- настройки проекта -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
     <build>
         <plugins>
+
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>2.0.8</version>
+                <configuration>
+                    <configVars>
+                        <MY_VAR>SomeValue</MY_VAR>
+                        <JAVA_OPTS>-Xss512k -XX:+UseCompressedOops</JAVA_OPTS>
+                    </configVars>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <configuration>
+                    <assembleDirectory>target</assembleDirectory>
+                    <programs>
+                        <program>
+                            <mainClass>Bot</mainClass>
+                            <name>workerBot</name>
+                        </program>
+                    </programs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
