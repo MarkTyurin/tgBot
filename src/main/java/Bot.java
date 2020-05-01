@@ -74,7 +74,8 @@ public class Bot extends TelegramLongPollingBot {
         keyboardRowList.add(keyboardFirstRow);
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
     }
-    public synchronized  void  sendMsg(Message message, String text) {
+    //Отправка сообщения
+    private void sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId().toString());
@@ -83,10 +84,12 @@ public class Bot extends TelegramLongPollingBot {
         try {
             setButtons(sendMessage);
             execute(sendMessage);
-
+        } catch (TelegramApiRequestException e) {
+            sendMessage.setText("Вы ввели слишком много сообщений! Подождите пару минут");
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+
     }
 
     public String getBotUsername() //Получение имени бота
