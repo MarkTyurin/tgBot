@@ -11,7 +11,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Bot extends TelegramLongPollingBot {
     public static void main(String[] args) {
@@ -29,42 +31,48 @@ public class Bot extends TelegramLongPollingBot {
     //лонг пул - очередь запросов.
     {
         Message message = update.getMessage();
-        if (message != null && message.hasText())
-        { switch ( message.getText()){
-            case "/help":
-                sendMsg(message, "Помощь");
-                break;
-            case "/settings":
-                sendMsg(message, "Настройки");
-                break;
-            default:
+        if (message != null && message.hasText()) {
+            String strMessage = message.getText();
+            strMessage =  Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
+            if (!strMessage.equals("")) {
+                sendMsg(message, strMessage);
+            }
         }
-        }
+    }
+
+    private String getCommand(String command, String message) {
+        return command.split(" ")[0];
+    }
+
+    private String getMessage(String message) {
+        return Arrays.stream(message.split(" ")).skip(1).collect(Collectors.joining(" "));
     }
     public synchronized void setButtons(SendMessage sendMessage) {
         // Создаем клавиуатуру
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        //Разметка клавиатуры
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        //Вывод клавиатуры всем пользователям
         replyKeyboardMarkup.setSelective(true);
+        //Подгонка под количество кнопок
         replyKeyboardMarkup.setResizeKeyboard(true);
+        //Не скрывать клавиатуру
         replyKeyboardMarkup.setOneTimeKeyboard(false);
 
-        // Создаем список строк клавиатуры
-        List<KeyboardRow> keyboard = new ArrayList<>();
-
-        // Первая строчка клавиатуры
+        //Лист кнопок
+        List<KeyboardRow> keyboardRowList = new ArrayList<>();
+        //Первая строка
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        // Добавляем кнопки в первую строчку клавиатуры
-        keyboardFirstRow.add(new KeyboardButton("Привет"));
-        // Вторая строчка клавиатуры
-        KeyboardRow keyboardSecondRow = new KeyboardRow();
-        // Добавляем кнопки во вторую строчку клавиатуры
-        keyboardSecondRow.add(new KeyboardButton("Помощь"));
-        // Добавляем все строчки клавиатуры в список
-        keyboard.add(keyboardFirstRow);
-        keyboard.add(keyboardSecondRow);
-        // и устанваливаем этот список нашей клавиатуре
-        replyKeyboardMarkup.setKeyboard(keyboard);
+
+        //Добавляем кнопки
+        keyboardFirstRow.add(new KeyboardButton("/coin"));
+        keyboardFirstRow.add(new KeyboardButton("/ok"));
+        keyboardFirstRow.add(new KeyboardButton("/magicBall"));
+        keyboardFirstRow.add(new KeyboardButton("/help"));
+
+        //Добавляем кнопки в массив
+        keyboardRowList.add(keyboardFirstRow);
+        replyKeyboardMarkup.setKeyboard(keyboardRowList);
     }
     public synchronized  void  sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
@@ -73,7 +81,9 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
         try {
+            setButtons(sendMessage);
             execute(sendMessage);
+
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
