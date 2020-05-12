@@ -1,3 +1,4 @@
+import lombok.SneakyThrows;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -27,6 +28,7 @@ public class Bot extends TelegramLongPollingBot {
 
     }
 
+    @SneakyThrows
     public void onUpdateReceived(Update update) //для получения обновлений через лонг пул
     //лонг пул - очередь запросов.
     {

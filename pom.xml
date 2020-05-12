@@ -75,6 +75,12 @@
             <artifactId>telegrambots</artifactId>
             <version>4.7</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-dbutils/commons-dbutils -->
+        <dependency>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>1.6</version>
+        </dependency>
 
 
         <dependency>
