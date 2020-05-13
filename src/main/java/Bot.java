@@ -65,7 +65,7 @@ public class Bot extends TelegramLongPollingBot {
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
                 rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
-                rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("/ok"));
+                rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
                 // Set the keyboard to the markup
                 rowsInline.add(rowInline);
                 rowsInline.add(rowInline);
@@ -106,7 +106,7 @@ public class Bot extends TelegramLongPollingBot {
                 String answer = "";
                 List games=null;
                 Message message = update.getMessage();
-                String strMessage = message.getText();
+                String strMessage = call_data;
                 strMessage =Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
                 while (strMessage.length()!= 0)
                     games.add(strMessage.split("//"));
