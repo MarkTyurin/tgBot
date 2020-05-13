@@ -48,13 +48,16 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) //для получения обновлений через лонг пул
     //лонг пул - очередь запросов.
     {
-
+          List game1 = null;
         Message message1 = update.getMessage();
         if (message1 != null && message1.hasText()) {
             String strMessage = message1.getText();
             strMessage =  Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
             if (!strMessage.equals("")) {
-                sendMsg(message1, strMessage);
+                while (strMessage.length()!= 0)
+                    game1.add(strMessage.split("//"));
+                for (int i =game1.size();i<=0;i--)
+                    sendMsg(message1, game1.get(i).toString());
             }
         }
 
@@ -76,7 +79,7 @@ public class Bot extends TelegramLongPollingBot {
                 rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
                 // Set the keyboard to the markup
                 rowsInline.add(rowInline);
-                rowsInline.add(rowInline);
+
                 // Add it to the message
                 markupInline.setKeyboard(rowsInline);
                 message.setReplyMarkup(markupInline);
@@ -127,10 +130,11 @@ public class Bot extends TelegramLongPollingBot {
                 for (Games game : games) {
                     sendMsg(message, game.toString());
                 }
-                
+
 
 
             }
+
 
         }
         /*
