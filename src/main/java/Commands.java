@@ -55,8 +55,25 @@ public class Commands {
                         min = Arrays.stream(message.split(" ")).mapToInt(Integer::parseInt).min().getAsInt();
                 int rand = new Random().nextInt(max - min + 1) + min;
                 return "Случайный результат между " + min + " и " + max + ": " + rand;
-            case "/magicBall":
+            case "/find":
+            {
+                Connection c;
+                c = DriverManager
+                        .getConnection(DB_URL, USER, PASS);
+                c.setAutoCommit(false);
+                QueryRunner run = new QueryRunner();
 
+                ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                String str="";
+                String name = message.toString();
+                List<Games> games = run.query(c, "SELECT * FROM Games where name like %"+name+"%", h);
+                for (Games game : games) {
+                    str+=  game.toString() ;
+                }
+                return " "+ str+"//";
+
+
+            }
             case "/help":
                 return String.join("\n", TextCommands.help);
 

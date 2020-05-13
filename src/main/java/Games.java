@@ -95,23 +95,15 @@ public class Games implements Serializable {
             throwables.printStackTrace();
         }
 
-
-
-
-
-        return "Игра:" + name +
-
-                "\n Вселенной: " + universe +
-                "\n Жанра: " + genre +
-
-                "\n Краткое описание: " + description +
-                "\n Количество игроков: " + number_players +
-                "\n Дата выхода: " + release_date +
-                "\n Рейтинг: " + rating +
-
-                "\n Скачать правила: " + rules +
-                "\n" + link +
-                '}';
+        return  name +
+                "\nВселенная: " + universe +
+                "\nЖанр: " + genre +
+                "\nКраткое описание: " +description +
+                "\nКоличество игроков: " + number_players +
+                "\nДата выхода: " + release_date +
+                "\nРейтинг: " + rating +
+                "\nСкачать правила: " + rules +
+                "\n" + link;
     }
 
     public String get1() {

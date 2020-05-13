@@ -192,7 +192,7 @@ public class Bot extends TelegramLongPollingBot {
         //Добавляем кнопки
         keyboardFirstRow.add(new KeyboardButton("/coin"));
         keyboardFirstRow.add(new KeyboardButton("/ok"));
-        keyboardFirstRow.add(new KeyboardButton("/magicBall"));
+        keyboardFirstRow.add(new KeyboardButton("/find"));
         keyboardFirstRow.add(new KeyboardButton("/help"));
 
         //Добавляем кнопки в массив
