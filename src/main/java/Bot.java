@@ -55,21 +55,21 @@ public class Bot extends TelegramLongPollingBot {
             strMessage =  Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
             if (!strMessage.equals("")) {
                     sendMsg(message1,strMessage);
-            }
+            }/*
             Connection c;
             c = DriverManager
                     .getConnection(DB_URL, USER, PASS);
-            c.setAutoCommit(false);
+            c.setAutoCommit(false);*/
             QueryRunner run = new QueryRunner();
 
             ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
 
             String name = message1.getText();
-            List<Games> games = run.query(c, "SELECT * FROM Games where name like '%" + name + "%'", h);
+            List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where name like '%" + name + "%'", h);
             for (Games game : games) {
                 sendMsg(message1, game.toString());
             }
-            c.close();
+          
 
         }
 
@@ -126,23 +126,23 @@ public class Bot extends TelegramLongPollingBot {
             }
 
             if (call_data.equals("/ok")) {
-                Connection c;
+              /*  Connection c;
 
                 c = DriverManager
                         .getConnection(DB_URL, USER, PASS);
                 c.setAutoCommit(false);
-
+*/
                 QueryRunner run = new QueryRunner();
 
                 Message message = update.getCallbackQuery().getMessage();
                 ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
 
 
-                List<Games> games = run.query(c, "SELECT * FROM Games", h);
+                List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
                 for (Games game : games) {
                     sendMsg(message, game.toString());
                 }
-                c.close();
+
 
 
             }

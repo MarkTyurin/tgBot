@@ -76,8 +76,8 @@ public class Games implements Serializable {
         String sql;
         sql = "SELECT name FROM Genre Where id =  " + id_genre;
         try {
-            connection = DriverManager.getConnection(DB_URL, USER, PASS);
-            statement = connection.createStatement();
+           // connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            statement = Db.connecti.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next())
                 genre = resultSet.getString("name") ;
@@ -86,8 +86,8 @@ public class Games implements Serializable {
         }
         sql = "SELECT name FROM universe Where id =  " + id_universe;
         try {
-            connection = DriverManager.getConnection(DB_URL, USER, PASS);
-            statement = connection.createStatement();
+           // connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            statement = Db.connecti.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next())
                 universe = resultSet.getString("name") ;
