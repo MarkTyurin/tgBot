@@ -101,16 +101,16 @@ public class Games implements Serializable {
 
         return "Игра:" + name +
 
-                "/n Вселенной: " + universe +
-                "/n Жанра: " + genre +
+                "\n Вселенной: " + universe +
+                "\n Жанра: " + genre +
 
-                " /nКраткое описание: " + description +
-                "/nКоличество игроков: " + number_players +
-                "/nДата выхода: " + release_date +
-                "/nРейтинг: " + rating +
+                "\n Краткое описание: " + description +
+                "\n Количество игроков: " + number_players +
+                "\n Дата выхода: " + release_date +
+                "\n Рейтинг: " + rating +
 
-                "/nСкачать правила: " + rules +
-                "/n" + link +
+                "\n Скачать правила: " + rules +
+                "\n" + link +
                 '}';
     }
 
