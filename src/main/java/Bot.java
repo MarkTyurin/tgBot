@@ -56,6 +56,20 @@ public class Bot extends TelegramLongPollingBot {
             if (!strMessage.equals("")) {
                     sendMsg(message1,strMessage);
             }
+            Connection c;
+            c = DriverManager
+                    .getConnection(DB_URL, USER, PASS);
+            c.setAutoCommit(false);
+            QueryRunner run = new QueryRunner();
+
+            ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+
+            String name = message1.getText();
+            List<Games> games = run.query(c, "SELECT * FROM Games where name like %"+name+"%", h);
+            for (Games game : games) {
+                sendMsg(message1, game.toString());
+            }
+
         }
 
 
