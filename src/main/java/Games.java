@@ -1,21 +1,30 @@
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.telegram.telegrambots.meta.api.objects.Message;
+
 import java.io.Serializable;
+import java.sql.*;
 import java.util.Date;
+import java.util.List;
 
 public class Games implements Serializable {
+    static final String DB_URL = "jdbc:postgresql://ec2-54-247-89-181.eu-west-1.compute.amazonaws.com:5432/d4k73hbn3que92";
+    static final String USER = "akuaihbrfdperl";
+    static final String PASS = "e240eb73da4d572576a41ee28fe9dab1ace5ec37bb29532e3489618f84607bd0";
     private int id;
-
+    private int rating;
     private int id_universe;
     private int id_genre;
     private String name;
     private String description;
     private String number_players;
-    private Date release_date;
-    private int rating;
-
     private String image;
     private String rules;
     private String link;
-
+    private Date release_date;
+    private  String genre;
+    private  String universe;
     public void setId(int id) {
         this.id = id;
     }
@@ -62,18 +71,46 @@ public class Games implements Serializable {
 
     @Override
     public String toString() {
-        return "Games{" +
-                "id=" + id +
-                ", id_universe=" + id_universe +
-                ", id_genre=" + id_genre +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", number_players='" + number_players + '\'' +
-                ", release_date=" + release_date +
-                ", rating=" + rating +
-                ", image='" + image + '\'' +
-                ", rules='" + rules + '\'' +
-                ", link='" + link + '\'' +
+        Statement statement = null;
+        Connection connection = null;
+        String sql;
+        sql = "SELECT name FROM Genre Where id =  " + id_genre;
+        try {
+            connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next())
+                genre = resultSet.getString("name") ;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        sql = "SELECT name FROM universe Where id =  " + id_universe;
+        try {
+            connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next())
+                universe = resultSet.getString("name") ;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+
+
+
+        return "Игра:" + name +
+
+                "/n Вселенной: " + universe +
+                "/n Жанра: " + genre +
+
+                " /nКраткое описание: " + description +
+                "/nКоличество игроков: " + number_players +
+                "/nДата выхода: " + release_date +
+                "/nРейтинг: " + rating +
+
+                "/nСкачать правила: " + rules +
+                "/n" + link +
                 '}';
     }
 

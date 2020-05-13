@@ -48,16 +48,13 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) //для получения обновлений через лонг пул
     //лонг пул - очередь запросов.
     {
-          List game1 = null;
+
         Message message1 = update.getMessage();
         if (message1 != null && message1.hasText()) {
             String strMessage = message1.getText();
             strMessage =  Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
             if (!strMessage.equals("")) {
-                while (strMessage.length()!= 0)
-                    game1.add(strMessage.split("//"));
-                for (int i =game1.size();i<=0;i--)
-                    sendMsg(message1, game1.get(i).toString());
+                    sendMsg(message1,strMessage);
             }
         }
 
@@ -124,7 +121,7 @@ public class Bot extends TelegramLongPollingBot {
 
                 Message message = update.getCallbackQuery().getMessage();
                 ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-                String str="";
+
 
                 List<Games> games = run.query(c, "SELECT * FROM Games", h);
                 for (Games game : games) {
