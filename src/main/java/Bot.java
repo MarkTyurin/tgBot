@@ -69,6 +69,7 @@ public class Bot extends TelegramLongPollingBot {
             for (Games game : games) {
                 sendMsg(message1, game.toString());
             }
+            c.close();
 
         }
 
@@ -141,7 +142,7 @@ public class Bot extends TelegramLongPollingBot {
                 for (Games game : games) {
                     sendMsg(message, game.toString());
                 }
-
+                c.close();
 
 
             }

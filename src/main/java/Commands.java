@@ -46,6 +46,7 @@ public class Commands {
                 for (Games game : games) {
                   str+=  game.toString() ;
                 }
+                c.close();
                 return " "+ str+"//";
             }
             case "/coin":
@@ -70,7 +71,9 @@ public class Commands {
                 for (Games game : games) {
                     str+=  game.toString() ;
                 }
+                c.close();
                 return " "+ str+"//";
+
 
 
             }
