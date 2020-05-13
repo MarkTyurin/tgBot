@@ -33,41 +33,23 @@ public class Bot extends TelegramLongPollingBot {
         }
 
     }
-    private void setInline() {
-        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-        List<InlineKeyboardButton> buttons1 = new ArrayList<>();
-        buttons1.add(new InlineKeyboardButton().setText("Кнопка").setCallbackData("17"));
-        buttons.add(buttons1);
 
-        InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
-        markupKeyboard.setKeyboard(buttons);
-    }
-
-        public static SendMessage sendInlineKeyBoardMessage(long chatId) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
-        inlineKeyboardButton1.setText("Тык");
-        inlineKeyboardButton1.setCallbackData("Button \"Тык\" has been pressed");
-        inlineKeyboardButton2.setText("Тык2");
-        inlineKeyboardButton2.setCallbackData("Button \"Тык2\" has been pressed");
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow1.add(inlineKeyboardButton1);
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("Fi4a").setCallbackData("CallFi4a"));
-        keyboardButtonsRow2.add(inlineKeyboardButton2);
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-        inlineKeyboardMarkup.setKeyboard(rowList);
-        return new SendMessage().setChatId(chatId).setText("Пример").setReplyMarkup(inlineKeyboardMarkup);
-    }
 
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) //для получения обновлений через лонг пул
     //лонг пул - очередь запросов.
     {
+
+        Message message1 = update.getMessage();
+        if (message1 != null && message1.hasText()) {
+            String strMessage = message1.getText();
+            strMessage =  Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
+            if (!strMessage.equals("")) {
+                sendMsg(message1, strMessage);
+            }
+        }
+
 
         // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -83,7 +65,9 @@ public class Bot extends TelegramLongPollingBot {
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
                 rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
+                rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("/ok2"));
                 // Set the keyboard to the markup
+                rowsInline.add(rowInline);
                 rowsInline.add(rowInline);
                 // Add it to the message
                 markupInline.setKeyboard(rowsInline);
@@ -103,6 +87,8 @@ public class Bot extends TelegramLongPollingBot {
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
 
+
+
             if (call_data.equals("update_msg_text")) {
                 String answer = "Updated message text";
                 EditMessageText new_message = new EditMessageText()
@@ -115,6 +101,20 @@ public class Bot extends TelegramLongPollingBot {
                     e.printStackTrace();
                 }
             }
+
+            if (call_data.equals("/ok2")) {
+                String answer = "";
+                List games=null;
+                Message message = update.getMessage();
+                String strMessage = message.getText();
+                strMessage =Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
+                while (strMessage.length()!= 0)
+                    games.add(strMessage.split("//"));
+                for (int i =games.size();i<=0;i--)
+                        sendMsg(message, games.get(i).toString());
+
+            }
+
         }
         /*
         if(update.hasMessage()){
@@ -207,5 +207,39 @@ public class Bot extends TelegramLongPollingBot {
     public String getBotToken() //Получение токена бота
     {
         return "1216338158:AAFQUTpEJe7fkD9VFN3wnAxd5YjzV2q1a9M";
+    }
+
+
+
+
+
+    private void setInline() {
+        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+        List<InlineKeyboardButton> buttons1 = new ArrayList<>();
+        buttons1.add(new InlineKeyboardButton().setText("Кнопка").setCallbackData("17"));
+        buttons.add(buttons1);
+
+        InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
+        markupKeyboard.setKeyboard(buttons);
+    }
+
+    public static SendMessage sendInlineKeyBoardMessage(long chatId) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
+        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
+        inlineKeyboardButton1.setText("Тык");
+        inlineKeyboardButton1.setCallbackData("Button \"Тык\" has been pressed");
+        inlineKeyboardButton2.setText("Тык2");
+        inlineKeyboardButton2.setCallbackData("Button \"Тык2\" has been pressed");
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        keyboardButtonsRow1.add(inlineKeyboardButton1);
+        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("Fi4a").setCallbackData("CallFi4a"));
+        keyboardButtonsRow2.add(inlineKeyboardButton2);
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow1);
+        rowList.add(keyboardButtonsRow2);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return new SendMessage().setChatId(chatId).setText("Пример").setReplyMarkup(inlineKeyboardMarkup);
     }
 }
