@@ -106,8 +106,8 @@ public class Bot extends TelegramLongPollingBot {
                 String answer = "";
                 List games=null;
                 Message message = update.getMessage();
-                String strMessage = call_data;
-                strMessage =Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
+                String strMessage = update.getCallbackQuery().getData();;
+                strMessage =Commands.getCommands(getMessage(strMessage), getCommand(strMessage, (strMessage)));
                 while (strMessage.length()!= 0)
                     games.add(strMessage.split("//"));
                 for (int i =games.size();i<=0;i--)
