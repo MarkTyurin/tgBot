@@ -65,7 +65,7 @@ public class Commands {
 
                 ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
                 String str="";
-                String name = message.toString();
+                String name = message;
                 List<Games> games = run.query(c, "SELECT * FROM Games where name like %"+name+"%", h);
                 for (Games game : games) {
                     str+=  game.toString() ;
@@ -79,7 +79,20 @@ public class Commands {
 
 
         }
-        return "";
+        Connection c;
+        c = DriverManager
+                .getConnection(DB_URL, USER, PASS);
+        c.setAutoCommit(false);
+        QueryRunner run = new QueryRunner();
+
+        ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+        String str="";
+        String name = message;
+        List<Games> games = run.query(c, "SELECT * FROM Games where name like %"+name+"%", h);
+        for (Games game : games) {
+            str+=  game.toString() ;
+        }
+        return " "+ str+"//";
     }
 
 
