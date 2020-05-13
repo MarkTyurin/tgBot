@@ -29,11 +29,11 @@ public class Commands {
 
             case "/ok": {
                 Connection c;
-                Statement stmt;
+
                 c = DriverManager
                         .getConnection(DB_URL, USER, PASS);
                 c.setAutoCommit(false);
-                stmt = c.createStatement();
+
                 QueryRunner run = new QueryRunner();
 
 // Use the BeanListHandler implementation to convert all

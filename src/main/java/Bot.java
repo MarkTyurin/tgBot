@@ -1,4 +1,7 @@
 import lombok.SneakyThrows;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -15,6 +18,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +28,9 @@ import java.util.stream.Collectors;
 import static java.lang.StrictMath.toIntExact;
 
 public class Bot extends TelegramLongPollingBot {
+    static final String DB_URL = "jdbc:postgresql://ec2-54-247-89-181.eu-west-1.compute.amazonaws.com:5432/d4k73hbn3que92";
+    static final String USER = "akuaihbrfdperl";
+    static final String PASS = "e240eb73da4d572576a41ee28fe9dab1ace5ec37bb29532e3489618f84607bd0";
     public static void main(String[] args) {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
@@ -103,15 +111,24 @@ public class Bot extends TelegramLongPollingBot {
             }
 
             if (call_data.equals("/ok")) {
-                String answer = "";
-                List games=null;
-                Message message = update.getMessage();
-                String strMessage = update.getCallbackQuery().getData();;
-                strMessage =Commands.getCommands(getMessage(strMessage), getCommand(strMessage, (strMessage)));
-                while (strMessage.length()!= 0)
-                    games.add(strMessage.split("//"));
-                for (int i =games.size();i<=0;i--)
-                        sendMsg(message, games.get(i).toString());
+                Connection c;
+
+                c = DriverManager
+                        .getConnection(DB_URL, USER, PASS);
+                c.setAutoCommit(false);
+
+                QueryRunner run = new QueryRunner();
+
+                Message message = update.getCallbackQuery().getMessage();
+                ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                String str="";
+
+                List<Games> games = run.query(c, "SELECT * FROM Games", h);
+                for (Games game : games) {
+                    sendMsg(message, game.toString());
+                }
+                
+
 
             }
 
