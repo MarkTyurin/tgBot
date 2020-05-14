@@ -111,102 +111,99 @@ public class Bot extends TelegramLongPollingBot {
             String call_data = update.getCallbackQuery().getData();
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
-           // if (call_data.equals("update_msg_text")) {
-                switch (call_data) {
-                    case "/start": {
-                        String answer = "Updated message text";
-                        EditMessageText new_message = new EditMessageText()
-                                .setChatId(chat_id)
-                                .setMessageId(toIntExact(message_id))
-                                .setText(answer);
-                        try {
-                            execute(new_message);
-                            break;
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    case "/ok":  {
-                        QueryRunner run = new QueryRunner();
-                        Message message = update.getCallbackQuery().getMessage();
-                        ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-                        List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
-                        for (Games game : games) {
-                            sendMsg(message, game.toString());
-                        }
+            // if (call_data.equals("update_msg_text")) {
+            switch (call_data) {
+                case "/start": {
+                    String answer = "Updated message text";
+                    EditMessageText new_message = new EditMessageText()
+                            .setChatId(chat_id)
+                            .setMessageId(toIntExact(message_id))
+                            .setText(answer);
+                    try {
+                        execute(new_message);
                         break;
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
                     }
-                    case "/genre":  {
-                        QueryRunner run = new QueryRunner();
-                        ResultSetHandler<List<Genre>> h = new BeanListHandler<Genre>(Genre.class);
-                        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-                        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                        rowsInline.add(rowInline);
-                        // Add it to the message
-                        markupInline.setKeyboard(rowsInline);
-                        List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
-                        for (Genre genre : genres) {
-                            rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
-                        }
-                        EditMessageText new_message = new EditMessageText()
-                                .setChatId(chat_id)
-                                .setMessageId(toIntExact(message_id))
-                                .setText("Выбор жанра")
-                                .setReplyMarkup(markupInline);
-                        try {
-                            execute(new_message);
-                            break;
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
+                }
+
+                case "/ok": {
+                    QueryRunner run = new QueryRunner();
+                    Message message = update.getCallbackQuery().getMessage();
+                    ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                    List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
+                    for (Games game : games) {
+                        sendMsg(message, game.toString());
+                    }
+                    break;
+                }
+                case "/genre": {
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Genre>> h = new BeanListHandler<Genre>(Genre.class);
+                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                    rowsInline.add(rowInline);
+                    // Add it to the message
+                    markupInline.setKeyboard(rowsInline);
+                    List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
+                    for (Genre genre : genres) {
+                        rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre"));
+                    }
+                    EditMessageText new_message = new EditMessageText()
+                            .setChatId(chat_id)
+                            .setMessageId(toIntExact(message_id))
+                            .setText("Выбор жанра")
+                            .setReplyMarkup(markupInline);
+                    try {
+                        execute(new_message);
+                        break;
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                case "/find_genre": {
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                    Statement statement = null;
+                    String sql;
+                    int id_genre = 0;
+                    sql = "SELECT id FROM Genre Where name =";
+                    try {
+                        // connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                        statement = Db.connecti.createStatement();
+                        ResultSet resultSet = statement.executeQuery(sql);
+                        while (resultSet.next())
+                            id_genre = resultSet.getInt("id");
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
 
-                    case "/find_genre":  {
-                        QueryRunner run = new QueryRunner();
-                        ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-                        Statement statement = null;
-                        String sql;
-                        int id_genre=0;
-                        sql = "SELECT id FROM Genre Where name =" ;
-                        try {
-                            // connection = DriverManager.getConnection(DB_URL, USER, PASS);
-                            statement = Db.connecti.createStatement();
-                            ResultSet resultSet = statement.executeQuery(sql);
-                            while (resultSet.next())
-                                id_genre = resultSet.getInt("id") ;
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-
-                        List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre ="+id_genre, h);
-                        for (Games game : games) {
-                            SendMessage msg = new SendMessage()
-                                    .setText(game.toString());
-                            //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
-                            execute( msg);
-                        }
-
-
-
+                    List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
+                    for (Games game : games) {
+                        SendMessage msg = new SendMessage()
+                                .setText(game.toString());
+                        //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
+                        execute(msg);
                     }
+                    break;
 
-
-
-                    case "/universe":  {
-                        QueryRunner run = new QueryRunner();
-                        Message message = update.getCallbackQuery().getMessage();
-                        ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-                        List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
-                        for (Games game : games) {
-                            sendMsg(message, game.toString());
-                        }
-                    }
 
                 }
 
 
+                case "/universe": {
+                    QueryRunner run = new QueryRunner();
+                    Message message = update.getCallbackQuery().getMessage();
+                    ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                    List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
+                    for (Games game : games) {
+                        sendMsg(message, game.toString());
+                    }
+                }
+
+            }
 
 
         }
