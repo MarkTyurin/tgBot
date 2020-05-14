@@ -18,8 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -149,7 +148,7 @@ public class Bot extends TelegramLongPollingBot {
                         markupInline.setKeyboard(rowsInline);
                         List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                         for (Genre genre : genres) {
-                            rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/universe"));
+                            rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
                         }
                         EditMessageText new_message = new EditMessageText()
                                 .setChatId(chat_id)
@@ -162,9 +161,38 @@ public class Bot extends TelegramLongPollingBot {
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    case "/find_genre":  {
+                        QueryRunner run = new QueryRunner();
+                        ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                        Statement statement = null;
+                        String sql;
+                        int id_genre=0;
+                        sql = "SELECT id FROM Genre Where name =" ;
+                        try {
+                            // connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                            statement = Db.connecti.createStatement();
+                            ResultSet resultSet = statement.executeQuery(sql);
+                            while (resultSet.next())
+                                id_genre = resultSet.getInt("id") ;
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+
+                        List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre ="+id_genre, h);
+                        for (Games game : games) {
+                            SendMessage msg = new SendMessage()
+                                    .setText(game.toString());
+                            //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
+                            execute( msg);
+                        }
+
 
 
                     }
+
+
 
                     case "/universe":  {
                         QueryRunner run = new QueryRunner();

@@ -72,7 +72,7 @@ public class Games implements Serializable {
     @Override
     public String toString() {
         Statement statement = null;
-        Connection connection = null;
+
         String sql;
         sql = "SELECT name FROM Genre Where id =  " + id_genre;
         try {
