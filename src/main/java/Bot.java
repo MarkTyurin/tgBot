@@ -181,7 +181,7 @@ public class Bot extends TelegramLongPollingBot {
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
                     Statement statement = null;
                     String sql;
-                    int id_genre = 0;
+                    int id_genre = 1000;
                     sql = "SELECT id FROM Genre Where name like ='%"+ genre+"%'";
                     try {
                         // connection = DriverManager.getConnection(DB_URL, USER, PASS);
