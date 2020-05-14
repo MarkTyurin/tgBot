@@ -129,7 +129,8 @@ public class Bot extends TelegramLongPollingBot {
                     int id_user = message1.getFrom().getId();
                     Statement statement = null;
                     String sql;
-                    sql = "INSERT INTO user_games (id_user, id_game) VALUES ('"+id_user+"'"+"'"+id_game+"')";
+
+                    sql = "INSERT INTO user_games (id_user, id_game) VALUES ("+id_user+",'"+id_game+"')";
                     try {
                         statement = Db.connecti.createStatement();
                         statement.executeQuery(sql);
@@ -143,10 +144,11 @@ public class Bot extends TelegramLongPollingBot {
                     String  nam = message1.getFrom().getFirstName();
                     Statement statement = null;
                     String sql;
-                    sql = "INSERT INTO users (tg_id,nickname) VALUES  ('"+id_user+"'" +"'"+ nam+"')";
+                    sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+id_user+", '"+nam+"')";
                     try {
                         statement = Db.connecti.createStatement();
                        statement.executeQuery(sql);
+                        sendMsg(message1, "аккаунт добавлен");
                  } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
