@@ -182,7 +182,7 @@ public class Bot extends TelegramLongPollingBot {
                     Statement statement = null;
                     String sql;
                     int id_genre = 0;
-                    sql = "SELECT id FROM Genre Where name ="+ genre;
+                    sql = "SELECT id FROM Genre Where name ='"+ genre+"'";
                     try {
                         // connection = DriverManager.getConnection(DB_URL, USER, PASS);
                         statement = Db.connecti.createStatement();

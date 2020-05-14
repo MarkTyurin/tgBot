@@ -8,6 +8,16 @@ public class Genre {
     private String name;
     private String description;
 
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "id=" + id +
+                ", image='" + image + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }
