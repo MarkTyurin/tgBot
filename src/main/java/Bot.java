@@ -182,7 +182,7 @@ public class Bot extends TelegramLongPollingBot {
                     Statement statement = null;
                     String sql;
                     int id_genre = 0;
-                    sql = "SELECT id FROM Genre Where name ='"+ genre+"'";
+                    sql = "SELECT id FROM Genre Where name like ='%"+ genre+"%'";
                     try {
                         // connection = DriverManager.getConnection(DB_URL, USER, PASS);
                         statement = Db.connecti.createStatement();
@@ -192,7 +192,7 @@ public class Bot extends TelegramLongPollingBot {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-
+                    sendMsg(message, String.valueOf(id_genre));
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
                     for (Games game : games) {
                         SendMessage msg2 = new SendMessage()
