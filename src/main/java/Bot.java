@@ -109,10 +109,13 @@ public class Bot extends TelegramLongPollingBot {
         } else if (update.hasCallbackQuery()) {
             // Set variables
             String call_data = update.getCallbackQuery().getData();
+            String[] data ;
+
+              data=call_data.split(",");
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
             // if (call_data.equals("update_msg_text")) {
-            switch (call_data) {
+            switch (data[0]) {
                 case "/start": {
                     String answer = "Updated message text";
                     EditMessageText new_message = new EditMessageText()
@@ -148,7 +151,7 @@ public class Bot extends TelegramLongPollingBot {
                     markupInline.setKeyboard(rowsInline);
                     List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                     for (Genre genre : genres) {
-                        rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre"));
+                        rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre, " +genre));
                     }
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
@@ -164,15 +167,15 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
                 case "/find_genre": {
-                    String genre = update.getCallbackQuery().getMessage().getText();
+                    String genre = data[1];
                     Message message = update.getCallbackQuery().getMessage();
-                   /*
+
                     SendMessage msg = new SendMessage()
                             .setChatId(chat_id)
                             .setText(genre);
                     //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
                     execute(msg);
-                    */
+
                     sendMsg(message, genre);
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
