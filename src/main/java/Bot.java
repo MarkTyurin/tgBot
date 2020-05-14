@@ -86,11 +86,14 @@ public class Bot extends TelegramLongPollingBot {
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
                 rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
+                rowsInline.add(rowInline);
                 rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
+                rowsInline.add(rowInline);
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
+                rowsInline.add(rowInline);
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по вселенной").setCallbackData("/universe"));
                 // Set the keyboard to the markup
-                rowsInline.add(rowInline);
+
 
                 // Add it to the message
                 markupInline.setKeyboard(rowsInline);
@@ -119,6 +122,7 @@ public class Bot extends TelegramLongPollingBot {
                                 .setText(answer);
                         try {
                             execute(new_message);
+                            break;
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
@@ -132,6 +136,7 @@ public class Bot extends TelegramLongPollingBot {
                         for (Games game : games) {
                             sendMsg(message, game.toString());
                         }
+                        break;
                     }
                     case "/genre":  {
                         QueryRunner run = new QueryRunner();
@@ -140,17 +145,12 @@ public class Bot extends TelegramLongPollingBot {
                         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                         List<InlineKeyboardButton> rowInline = new ArrayList<>();
                         rowsInline.add(rowInline);
-
                         // Add it to the message
                         markupInline.setKeyboard(rowsInline);
-
-
                         List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                         for (Genre genre : genres) {
                             rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/universe"));
                         }
-
-
                         EditMessageText new_message = new EditMessageText()
                                 .setChatId(chat_id)
                                 .setMessageId(toIntExact(message_id))
@@ -158,6 +158,7 @@ public class Bot extends TelegramLongPollingBot {
                                 .setReplyMarkup(markupInline);
                         try {
                             execute(new_message);
+                            break;
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
