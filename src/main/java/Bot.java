@@ -142,7 +142,9 @@ public class Bot extends TelegramLongPollingBot {
                 case "/add_user": {
                     int id_user = message1.getFrom().getId();
                     String  nam = message1.getFrom().getFirstName();
-                    sendMsg(message1, nam +"dsfsdfdsds"+ id_user);
+                    SendMessage newM = new SendMessage()
+                            .setText(nam +"dsfsdfdsds"+ id_user);
+                    execute(newM);
                     Statement statement = null;
                     String sql;
                     sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+id_user+", '"+nam+"')";
