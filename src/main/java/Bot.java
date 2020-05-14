@@ -140,6 +140,10 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
                 case "/add_user": {
+                    SendMessage newM2 = new SendMessage()
+                            .setText("dsfsdfdsds");
+                    execute(newM2);
+
                     int id_user = message1.getFrom().getId();
                     String  nam = message1.getFrom().getFirstName();
                     SendMessage newM = new SendMessage()
