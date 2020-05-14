@@ -143,7 +143,7 @@ public class Bot extends TelegramLongPollingBot {
                     String  nam = message1.getFrom().getFirstName();
                     Statement statement = null;
                     String sql;
-                    sql = "INSERT INTO users (tg_id,NAME) VALUES  ('"+id_user+"'" +"'"+ nam+"')";
+                    sql = "INSERT INTO users (tg_id,nickname) VALUES  ('"+id_user+"'" +"'"+ nam+"')";
                     try {
                         statement = Db.connecti.createStatement();
                        statement.executeQuery(sql);
