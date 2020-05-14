@@ -28,15 +28,13 @@ import java.util.stream.Collectors;
 import static java.lang.StrictMath.toIntExact;
 
 public class Bot extends TelegramLongPollingBot {
-    static final String DB_URL = "jdbc:postgresql://ec2-54-247-89-181.eu-west-1.compute.amazonaws.com:5432/d4k73hbn3que92";
-    static final String USER = "akuaihbrfdperl";
-    static final String PASS = "e240eb73da4d572576a41ee28fe9dab1ace5ec37bb29532e3489618f84607bd0";
+
     public static void main(String[] args) {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-        try{
+        try {
             telegramBotsApi.registerBot(new Bot());
-        }  catch (TelegramApiRequestException e) {
+        } catch (TelegramApiRequestException e) {
             e.printStackTrace();
         }
 
@@ -52,9 +50,9 @@ public class Bot extends TelegramLongPollingBot {
         Message message1 = update.getMessage();
         if (message1 != null && message1.hasText()) {
             String strMessage = message1.getText();
-            strMessage =  Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
+            strMessage = Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
             if (!strMessage.equals("")) {
-                    sendMsg(message1,strMessage);
+                sendMsg(message1, strMessage);
             }/*
             Connection c;
             c = DriverManager
@@ -69,7 +67,7 @@ public class Bot extends TelegramLongPollingBot {
             for (Games game : games) {
                 sendMsg(message1, game.toString());
             }
-          
+
 
         }
 
@@ -83,12 +81,14 @@ public class Bot extends TelegramLongPollingBot {
 
                 SendMessage message = new SendMessage() // Create a message object object
                         .setChatId(chat_id)
-                        .setText("You send /start");
+                        .setText("Что нужно сделать?");
                 InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
                 rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
                 rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
+                rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
+                rowInline.add(new InlineKeyboardButton().setText("Поиск по вселенной").setCallbackData("/universe"));
                 // Set the keyboard to the markup
                 rowsInline.add(rowInline);
 
@@ -109,43 +109,75 @@ public class Bot extends TelegramLongPollingBot {
             String call_data = update.getCallbackQuery().getData();
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
+           // if (call_data.equals("update_msg_text")) {
+                switch (call_data) {
+                    case "/start": {
+                        String answer = "Updated message text";
+                        EditMessageText new_message = new EditMessageText()
+                                .setChatId(chat_id)
+                                .setMessageId(toIntExact(message_id))
+                                .setText(answer);
+                        try {
+                            execute(new_message);
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    case "/ok":  {
+                        QueryRunner run = new QueryRunner();
+                        Message message = update.getCallbackQuery().getMessage();
+                        ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                        List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
+                        for (Games game : games) {
+                            sendMsg(message, game.toString());
+                        }
+                    }
+                    case "/genre":  {
+                        QueryRunner run = new QueryRunner();
+                        ResultSetHandler<List<Genre>> h = new BeanListHandler<Genre>(Genre.class);
+                        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                        rowsInline.add(rowInline);
+
+                        // Add it to the message
+                        markupInline.setKeyboard(rowsInline);
 
 
+                        List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
+                        for (Genre genre : genres) {
+                            rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/universe"));
+                        }
 
-            if (call_data.equals("update_msg_text")) {
-                String answer = "Updated message text";
-                EditMessageText new_message = new EditMessageText()
-                        .setChatId(chat_id)
-                        .setMessageId(toIntExact(message_id))
-                        .setText(answer);
-                try {
-                    execute(new_message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
+
+                        EditMessageText new_message = new EditMessageText()
+                                .setChatId(chat_id)
+                                .setMessageId(toIntExact(message_id))
+                                .setText("Выбор жанра")
+                                .setReplyMarkup(markupInline);
+                        try {
+                            execute(new_message);
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                    case "/universe":  {
+                        QueryRunner run = new QueryRunner();
+                        Message message = update.getCallbackQuery().getMessage();
+                        ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                        List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
+                        for (Games game : games) {
+                            sendMsg(message, game.toString());
+                        }
+                    }
+
                 }
-            }
-
-            if (call_data.equals("/ok")) {
-              /*  Connection c;
-
-                c = DriverManager
-                        .getConnection(DB_URL, USER, PASS);
-                c.setAutoCommit(false);
-*/
-                QueryRunner run = new QueryRunner();
-
-                Message message = update.getCallbackQuery().getMessage();
-                ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
 
 
-                List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
-                for (Games game : games) {
-                    sendMsg(message, game.toString());
-                }
-
-
-
-            }
 
 
         }
@@ -187,6 +219,7 @@ public class Bot extends TelegramLongPollingBot {
     private String getMessage(String message) {
         return Arrays.stream(message.split(" ")).skip(1).collect(Collectors.joining(" "));
     }
+
     public synchronized void setButtons(SendMessage sendMessage) {
         // Создаем клавиуатуру
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -214,6 +247,7 @@ public class Bot extends TelegramLongPollingBot {
         keyboardRowList.add(keyboardFirstRow);
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
     }
+
     //Отправка сообщения
     private void sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
@@ -241,9 +275,6 @@ public class Bot extends TelegramLongPollingBot {
     {
         return "1216338158:AAFQUTpEJe7fkD9VFN3wnAxd5YjzV2q1a9M";
     }
-
-
-
 
 
     private void setInline() {
