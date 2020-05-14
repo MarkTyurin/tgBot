@@ -151,7 +151,7 @@ public class Bot extends TelegramLongPollingBot {
                     markupInline.setKeyboard(rowsInline);
                     List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                     for (Genre genre : genres) {
-                        rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre," +genre.getName()));
+                        rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre,"+genre.getName()));
                     }
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
@@ -189,7 +189,7 @@ public class Bot extends TelegramLongPollingBot {
                         ResultSet resultSet = statement.executeQuery(sql);
                         while (resultSet.next())
                             id_genre = resultSet.getInt("id");
-                        System.out.println(id_genre+ "safdsfsdfds");
+
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
