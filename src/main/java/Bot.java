@@ -189,6 +189,7 @@ public class Bot extends TelegramLongPollingBot {
                         ResultSet resultSet = statement.executeQuery(sql);
                         while (resultSet.next())
                             id_genre = resultSet.getInt("id");
+                        System.out.println(id_genre+ "safdsfsdfds");
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
