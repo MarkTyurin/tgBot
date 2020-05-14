@@ -52,11 +52,7 @@ public class Bot extends TelegramLongPollingBot {
             strMessage = Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
             if (!strMessage.equals("")) {
                 sendMsg(message1, strMessage);
-            }/*
-            Connection c;
-            c = DriverManager
-                    .getConnection(DB_URL, USER, PASS);
-            c.setAutoCommit(false);*/
+            }
             QueryRunner run = new QueryRunner();
 
             ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
@@ -66,8 +62,6 @@ public class Bot extends TelegramLongPollingBot {
             for (Games game : games) {
                 sendMsg(message1, game.toString());
             }
-
-
         }
 
 
@@ -91,6 +85,7 @@ public class Bot extends TelegramLongPollingBot {
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
 
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по вселенной").setCallbackData("/universe"));
+                rowInline.add(new InlineKeyboardButton().setText("Внести аккаунт в базу данных").setCallbackData("/add_user"));
                 // Set the keyboard to the markup
                 rowsInline.add(rowInline);
 
@@ -129,7 +124,32 @@ public class Bot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                 }
+                case "/add": {
+                    String id_game = data[1];
+                    int id_user = message1.getFrom().getId();
+                    Statement statement = null;
+                    String sql;
+                    sql = "INSERT INTO user_games id_user, id_game VALUES '"+id_user+"'"+"'"+id_game+"'";
+                    try {
+                        statement = Db.connecti.createStatement();
+                        statement.executeQuery(sql);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace(); }
+                    break;
+                }
 
+                case "/add_user": {
+                    int id_user = message1.getFrom().getId();
+                    Statement statement = null;
+                    String sql;
+                    sql = "INSERT INTO users NAME VALUES '"+id_user+"'";
+                    try {
+                        statement = Db.connecti.createStatement();
+                       statement.executeQuery(sql);
+                 } catch (SQLException throwables) {
+                        throwables.printStackTrace(); }
+                    break;
+                }
                 case "/ok": {
                     QueryRunner run = new QueryRunner();
                     Message message = update.getCallbackQuery().getMessage();
@@ -194,16 +214,17 @@ public class Bot extends TelegramLongPollingBot {
                     rowsInline.add(rowInline);
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-                    rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add" ));
 
+                    SendMessage msg2 = new SendMessage()
+                            .setChatId(chat_id)
+
+                            .setReplyMarkup(markupInline);
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
                     for (Games game : games) {
-                        SendMessage msg2 = new SendMessage()
-                                .setChatId(chat_id)
-                                .setText(game.toString())
-                                .setReplyMarkup(markupInline);
+                       msg2.setText(game.toString());
                         //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
+                        rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add,"+game.getId()));
                         execute(msg2);
                     }
                     break;
@@ -351,6 +372,7 @@ public class Bot extends TelegramLongPollingBot {
         keyboardFirstRow.add(new KeyboardButton("/coin"));
         keyboardFirstRow.add(new KeyboardButton("/ok"));
         keyboardFirstRow.add(new KeyboardButton("/help"));
+        keyboardFirstRow.add(new KeyboardButton("/add account"));
 
         //Добавляем кнопки в массив
         keyboardRowList.add(keyboardFirstRow);

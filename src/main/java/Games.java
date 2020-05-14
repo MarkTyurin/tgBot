@@ -69,6 +69,58 @@ public class Games implements Serializable {
         this.link = link;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public int getId_universe() {
+        return id_universe;
+    }
+
+    public int getId_genre() {
+        return id_genre;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getNumber_players() {
+        return number_players;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public Date getRelease_date() {
+        return release_date;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getUniverse() {
+        return universe;
+    }
+
     @Override
     public String toString() {
         Statement statement = null;
