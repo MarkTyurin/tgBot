@@ -165,12 +165,15 @@ public class Bot extends TelegramLongPollingBot {
 
                 case "/find_genre": {
                     String genre = update.getCallbackQuery().getMessage().getText();
+                    Message message = update.getCallbackQuery().getMessage();
+                   /*
                     SendMessage msg = new SendMessage()
                             .setChatId(chat_id)
                             .setText(genre);
                     //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
                     execute(msg);
-
+                    */
+                    sendMsg(message, genre);
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
                     Statement statement = null;
@@ -189,11 +192,11 @@ public class Bot extends TelegramLongPollingBot {
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
                     for (Games game : games) {
-                        SendMessage msg = new SendMessage()
+                        SendMessage msg2 = new SendMessage()
                                 .setChatId(chat_id)
                                 .setText(game.toString());
                         //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
-                        execute(msg);
+                        execute(msg2);
                     }
                     break;
 
