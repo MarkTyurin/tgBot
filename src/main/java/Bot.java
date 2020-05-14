@@ -164,12 +164,19 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
                 case "/find_genre": {
+                    String genre = update.getCallbackQuery().getMessage().getText();
+                    SendMessage msg = new SendMessage()
+                            .setChatId(chat_id)
+                            .setText(genre);
+                    //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
+                    execute(msg);
+
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
                     Statement statement = null;
                     String sql;
                     int id_genre = 0;
-                    sql = "SELECT id FROM Genre Where name =";
+                    sql = "SELECT id FROM Genre Where name ="+ genre;
                     try {
                         // connection = DriverManager.getConnection(DB_URL, USER, PASS);
                         statement = Db.connecti.createStatement();
