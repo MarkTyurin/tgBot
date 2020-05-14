@@ -85,14 +85,14 @@ public class Bot extends TelegramLongPollingBot {
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
                 rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
-                rowsInline.add(rowInline);
+
                 rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
-                rowsInline.add(rowInline);
+
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
-                rowsInline.add(rowInline);
+
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по вселенной").setCallbackData("/universe"));
                 // Set the keyboard to the markup
-
+                rowsInline.add(rowInline);
 
                 // Add it to the message
                 markupInline.setKeyboard(rowsInline);
@@ -183,6 +183,7 @@ public class Bot extends TelegramLongPollingBot {
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
                     for (Games game : games) {
                         SendMessage msg = new SendMessage()
+                                .setChatId(chat_id)
                                 .setText(game.toString());
                         //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
                         execute(msg);
