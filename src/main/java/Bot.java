@@ -164,7 +164,7 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
                 case "/find_genre": {
-                    String genre = update.getCallbackQuery().getMessage().getText();
+                    String genre = update.getCallbackQuery().getData();
                     Message message = update.getCallbackQuery().getMessage();
                    /*
                     SendMessage msg = new SendMessage()
