@@ -113,10 +113,10 @@ public class Bot extends TelegramLongPollingBot {
 
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
-            long user_id = update.getCallbackQuery().getMessage().getFrom().getId();
-            String user_name = update.getCallbackQuery().getMessage().getFrom().getFirstName();
-            String user_name2 = update.getCallbackQuery().getMessage().getFrom().getUserName();
-
+            long user_id =  message1.getFrom().getId();
+            String user_name =  message1.getFrom().getFirstName();
+            String user_name2 =  message1.getFrom().getUserName();
+           
             // if (call_data.equals("update_msg_text")) {
             switch (data[0]) {
                 case "/start": {
