@@ -150,14 +150,17 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
               case "/user": {
-                  String user_first_name = update.getMessage().getChat().getFirstName();
-                  String user_last_name = update.getMessage().getChat().getLastName();
+
+                  SendMessage newM2 = new SendMessage()
+                          .setChatId(chat_id);
+                  newM2.setText("dsfdssfsdgd");
+                  execute(newM2);
                   String user_username = update.getMessage().getChat().getUserName();
                   long u_id = update.getMessage().getChat().getId();
 
-                   SendMessage newM2 = new SendMessage()
-                            .setChatId(chat_id);
-
+                  
+                  newM2.setText(user_username +"dsfdssfsdgd"+ u_id);
+                  execute(newM2);
                     Statement statement = null;
                     String sql;
                    sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+u_id+", '"+user_username+"')";
@@ -368,7 +371,8 @@ public class Bot extends TelegramLongPollingBot {
         return command.split(" ")[0];
     }
 
-    private String getMessage(String message) {
+    public String getMessage(String message) {
+
         return Arrays.stream(message.split(" ")).skip(1).collect(Collectors.joining(" "));
     }
 
