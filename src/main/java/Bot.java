@@ -48,6 +48,11 @@ public class Bot extends TelegramLongPollingBot {
     {
 
         Message message1 = update.getMessage();
+        String user_first_name = update.getMessage().getChat().getFirstName();
+        String user_last_name = update.getMessage().getChat().getLastName();
+        String user_username = update.getMessage().getChat().getUserName();
+        long u_id = update.getMessage().getChat().getId();
+
         if (message1 != null && message1.hasText()) {
             String strMessage = message1.getText();
             strMessage = Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
@@ -113,10 +118,11 @@ public class Bot extends TelegramLongPollingBot {
 
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
-            long user_id =  message1.getFrom().getId();
-            String user_name =  message1.getFrom().getFirstName();
-            String user_name2 =  message1.getFrom().getUserName();
-           
+            ///ИСКАТЬ ВАРИАНТ ПОЛУЧЕНИЯ АЙДИ И ИМЕНИ ЧЕРЕЗ АПИ
+         //   long user_id =  message1.getFrom().getId();
+          //  String user_name =  message1.getFrom().getFirstName();
+          //  String user_name2 =  message1.getFrom().getUserName();
+
             // if (call_data.equals("update_msg_text")) {
             switch (data[0]) {
                 case "/start": {
@@ -150,22 +156,16 @@ public class Bot extends TelegramLongPollingBot {
                 case "/user": {
                     SendMessage newM2 = new SendMessage()
                             .setChatId(chat_id)
-                            .setText("user_id= "+user_id + "user_n="+user_name+"user_n2="+user_name2);
+                            .setText("user_id= "+u_id + "user_n="+user_username+"user_n2="+user_first_name);
                     execute(newM2);
-                    Message message2 = update.getMessage();
-                    int id_user = message2.getFrom().getId();
-                    String  nam = message2.getFrom().getFirstName();
-                    SendMessage newM = new SendMessage()
-                            .setChatId(chat_id)
-                            .setText(nam +"dsfsdfdsds"+ id_user);
-                    execute(newM);
                     Statement statement = null;
                     String sql;
-                    sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+id_user+", '"+nam+"')";
+                    sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+u_id+", '"+user_username+"')";
                     try {
                         statement = Db.connecti.createStatement();
                        statement.executeQuery(sql);
-                        sendMsg(message2, "аккаунт добавлен");
+                       newM2.setText("аккаунт добавлен");
+                       execute(newM2);
                  } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
@@ -244,6 +244,7 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                        msg2.setText(game.toString());
                         //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
+                        rowInline.clear();
                         rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add,"+game.getId()));
                         execute(msg2);
                     }
