@@ -78,9 +78,9 @@ public class Bot extends TelegramLongPollingBot {
                 InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
+              //  rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
 
-                rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
+               // rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
 
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
 
@@ -107,6 +107,11 @@ public class Bot extends TelegramLongPollingBot {
             String[] data;
 
             data = call_data.split(",");
+
+            SendMessage newM2 = new SendMessage()
+                    .setText(String.join(" " , data));
+            execute(newM2);
+
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
             // if (call_data.equals("update_msg_text")) {
