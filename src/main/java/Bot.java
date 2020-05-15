@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 import static java.lang.StrictMath.toIntExact;
 
 public class Bot extends TelegramLongPollingBot {
+    public  String user_username;
+    public  long  u_id;
 
     public static void main(String[] args) {
         ApiContextInitializer.init();
@@ -81,6 +83,8 @@ public class Bot extends TelegramLongPollingBot {
                 SendMessage message = new SendMessage() // Create a message object object
                         .setChatId(chat_id)
                         .setText("Что нужно сделать?");
+                 user_username = update.getMessage().getChat().getUserName();
+                 u_id = update.getMessage().getChat().getId();
                 InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
@@ -155,10 +159,9 @@ public class Bot extends TelegramLongPollingBot {
                           .setChatId(chat_id);
                   newM2.setText("dsfdssfsdgd");
                   execute(newM2);
-                  String user_username = update.getMessage().getChat().getUserName();
-                  long u_id = update.getMessage().getChat().getId();
 
-                  
+
+
                   newM2.setText(user_username +"dsfdssfsdgd"+ u_id);
                   execute(newM2);
                     Statement statement = null;
