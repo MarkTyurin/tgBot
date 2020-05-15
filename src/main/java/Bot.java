@@ -62,7 +62,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
 
-            sendMsg(message1,   "user_id= "+u_id + "user_n="+user_username+"user_n2="+user_first_name);
+            sendMsg(message1,   "user_id= "+u_id + "user_n="+user_username+" user_n2="+user_first_name);
 
             QueryRunner run = new QueryRunner();
 
@@ -152,13 +152,12 @@ public class Bot extends TelegramLongPollingBot {
                     break;
                 }
 
-              /*  case "/user": {
+              case "/user": {
 
 
                    SendMessage newM2 = new SendMessage()
-                            .setChatId(chat_id)
-                            .setText("user_id= "+u_id + "user_n="+user_username+"user_n2="+user_first_name);
-                    execute(newM2);
+                            .setChatId(chat_id);
+
                     Statement statement = null;
                     String sql;
                    sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+u_id+", '"+user_username+"')";
@@ -170,7 +169,7 @@ public class Bot extends TelegramLongPollingBot {
                  } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
-                }*/
+                }
                 case "/ok": {
                     QueryRunner run = new QueryRunner();
                     Message message = update.getCallbackQuery().getMessage();
