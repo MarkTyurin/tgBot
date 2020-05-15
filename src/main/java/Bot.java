@@ -144,28 +144,25 @@ public class Bot extends TelegramLongPollingBot {
                     String sql;
                    SendMessage newM2 = new SendMessage()
                            .setChatId(chat_id);
-                   newM2.setText(id_game +"tttttt"+ u_id);
-                   execute(newM2);
+
                     sql = "INSERT INTO user_games (id_user, id_game) VALUES ("+u_id+",'"+id_game+"')";
                     try {
                         statement = Db.connecti.createStatement();
                         statement.executeQuery(sql);
                     } catch (SQLException throwables) {
-                        throwables.printStackTrace(); }
+                        throwables.printStackTrace();
+                        newM2.setText("Не удалось добавить игру.");
+                        execute(newM2);}
+                   newM2.setText("Игра добавлена.");
+                   execute(newM2);
                     break;
+
                 }
 
               case "/user": {
 
                   SendMessage newM2 = new SendMessage()
                           .setChatId(chat_id);
-                  newM2.setText("dsfdssfsdgd");
-                  execute(newM2);
-
-
-
-                  newM2.setText(user_username +"dsfdssfsdgd"+ u_id);
-                  execute(newM2);
                     Statement statement = null;
                     String sql;
                    sql = "INSERT INTO users (id, tg_id,nickname) VALUES  ("+u_id+","+u_id+", '"+user_username+"')";
@@ -174,8 +171,11 @@ public class Bot extends TelegramLongPollingBot {
                        statement.executeQuery(sql);
 
                  } catch (SQLException throwables) {
-                        throwables.printStackTrace(); }
-                  newM2.setText("аккаунт добавлен");
+                        newM2.setText("Не удалось добавить аккаунт.");
+                        execute(newM2);
+                        throwables.printStackTrace();
+                    }
+                  newM2.setText("Аккаунт добавлен.");
                   execute(newM2);
                     break;
                 }
