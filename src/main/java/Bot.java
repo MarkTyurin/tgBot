@@ -327,6 +327,45 @@ public class Bot extends TelegramLongPollingBot {
 
 
                 }
+                case "/user_games": {
+                     Statement statement = null;
+                    String sql;
+                    int id_game = 1000;
+                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                    rowsInline.add(rowInline);
+                    // Add it to the message
+                    markupInline.setKeyboard(rowsInline);
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+
+                  sql = "SELECT id_game FROM user_games Where id_user  =" +  u_id;
+                    try {
+                        statement = Db.connecti.createStatement();
+                        ResultSet resultSet = statement.executeQuery(sql);
+                        while (resultSet.next()) {
+                            id_game = resultSet.getInt("id_game");
+                            List<Games> games = run.query(Db.connecti, "SELECT * FROM games Where id  =" +  id_game, h);
+                            for (Games game : games) {
+                                SendMessage msg2 = new SendMessage()
+                                        .setChatId(chat_id)
+                                        .setText(game.getName()+"\n"+game.getLink()+"\n")
+                                        .setReplyMarkup(markupInline);
+                                rowInline.clear();
+                                rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId()+","+u_id));
+                                execute(msg2);
+                            }
+                        }
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    break;
+
+
+
+                }
 
 
             }
