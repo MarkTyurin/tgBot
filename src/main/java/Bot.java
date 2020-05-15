@@ -272,7 +272,7 @@ public class Bot extends TelegramLongPollingBot {
                     markupInline.setKeyboard(rowsInline);
                     List<Universe> universes = run.query(Db.connecti, "SELECT * FROM Universe", h);
                     for (Universe universe : universes) {
-                        rowInline.clear();
+
                         rowInline.add(new InlineKeyboardButton().setText(universe.getName()).setCallbackData("/find_universe," + universe.getName()));
                     }
                     EditMessageText new_message = new EditMessageText()
@@ -319,6 +319,7 @@ public class Bot extends TelegramLongPollingBot {
                                 .setChatId(chat_id)
                                 .setText(game.toString())
                                 .setReplyMarkup(markupInline);
+                        rowInline.clear();
                         rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
                         execute(msg2);
                     }
