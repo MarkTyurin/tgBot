@@ -140,11 +140,13 @@ public class Bot extends TelegramLongPollingBot {
                 }
                case "/add": {
                     String id_game = data[1];
-                    int id_user = 22;
                     Statement statement = null;
                     String sql;
-
-                    sql = "INSERT INTO user_games (id_user, id_game) VALUES ("+id_user+",'"+id_game+"')";
+                   SendMessage newM2 = new SendMessage()
+                           .setChatId(chat_id);
+                   newM2.setText(id_game +"tttttt"+ u_id);
+                   execute(newM2);
+                    sql = "INSERT INTO user_games (id_user, id_game) VALUES ("+u_id+",'"+id_game+"')";
                     try {
                         statement = Db.connecti.createStatement();
                         statement.executeQuery(sql);
@@ -166,14 +168,15 @@ public class Bot extends TelegramLongPollingBot {
                   execute(newM2);
                     Statement statement = null;
                     String sql;
-                   sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+u_id+", '"+user_username+"')";
+                   sql = "INSERT INTO users (id, tg_id,nickname) VALUES  ("+u_id+","+u_id+", '"+user_username+"')";
                     try {
                         statement = Db.connecti.createStatement();
                        statement.executeQuery(sql);
-                       newM2.setText("аккаунт добавлен");
-                       execute(newM2);
+
                  } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
+                  newM2.setText("аккаунт добавлен");
+                  execute(newM2);
                     break;
                 }
                 case "/ok": {
