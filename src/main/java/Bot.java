@@ -108,9 +108,7 @@ public class Bot extends TelegramLongPollingBot {
 
             data = call_data.split(",");
 
-            SendMessage newM3 = new SendMessage()
-                    .setText(String.join(" " , data));
-            execute(newM3);
+            
 
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
@@ -146,6 +144,7 @@ public class Bot extends TelegramLongPollingBot {
 
                 case "/user": {
                     SendMessage newM2 = new SendMessage()
+                            .setChatId(chat_id)
                             .setText("dsfsdfdsds");
                     execute(newM2);
 
