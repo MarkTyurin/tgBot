@@ -48,10 +48,10 @@ public class Bot extends TelegramLongPollingBot {
     {
 
         Message message1 = update.getMessage();
-      /*  String user_first_name = update.getMessage().getChat().getFirstName();
+      String user_first_name = update.getMessage().getChat().getFirstName();
         String user_last_name = update.getMessage().getChat().getLastName();
         String user_username = update.getMessage().getChat().getUserName();
-        long u_id = update.getMessage().getChat().getId();*/
+        long u_id = update.getMessage().getChat().getId();
 
         if (message1 != null && message1.hasText()) {
             String strMessage = message1.getText();
@@ -59,6 +59,11 @@ public class Bot extends TelegramLongPollingBot {
             if (!strMessage.equals("")) {
                 sendMsg(message1, strMessage);
             }
+
+
+
+            sendMsg(message1,   "user_id= "+u_id + "user_n="+user_username+"user_n2="+user_first_name);
+
             QueryRunner run = new QueryRunner();
 
             ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
@@ -132,9 +137,9 @@ public class Bot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                 }
-               /* case "/add": {
+               case "/add": {
                     String id_game = data[1];
-                    int id_user = message1.getFrom().getId();
+                    int id_user = 22;
                     Statement statement = null;
                     String sql;
 
@@ -145,16 +150,18 @@ public class Bot extends TelegramLongPollingBot {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
-                }/*
-/*
-                case "/user": {
-                    SendMessage newM2 = new SendMessage()
+                }
+
+              /*  case "/user": {
+
+
+                   SendMessage newM2 = new SendMessage()
                             .setChatId(chat_id)
                             .setText("user_id= "+u_id + "user_n="+user_username+"user_n2="+user_first_name);
                     execute(newM2);
                     Statement statement = null;
                     String sql;
-                    sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+u_id+", '"+user_username+"')";
+                   sql = "INSERT INTO users (tg_id,nickname) VALUES  ("+u_id+", '"+user_username+"')";
                     try {
                         statement = Db.connecti.createStatement();
                        statement.executeQuery(sql);
