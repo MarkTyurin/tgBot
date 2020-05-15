@@ -48,10 +48,7 @@ public class Bot extends TelegramLongPollingBot {
     {
 
         Message message1 = update.getMessage();
-        String user_first_name = update.getMessage().getChat().getFirstName();
-        String user_last_name = update.getMessage().getChat().getLastName();
-        String user_username = update.getMessage().getChat().getUserName();
-        long u_id = update.getMessage().getChat().getId();
+
 
         if (message1 != null && message1.hasText()) {
             String strMessage = message1.getText();
@@ -151,9 +148,12 @@ public class Bot extends TelegramLongPollingBot {
                         throwables.printStackTrace(); }
                     break;
                 }
-/*
-              case "/user": {
 
+              case "/user": {
+                  String user_first_name = update.getMessage().getChat().getFirstName();
+                  String user_last_name = update.getMessage().getChat().getLastName();
+                  String user_username = update.getMessage().getChat().getUserName();
+                  long u_id = update.getMessage().getChat().getId();
 
                    SendMessage newM2 = new SendMessage()
                             .setChatId(chat_id);
@@ -169,7 +169,7 @@ public class Bot extends TelegramLongPollingBot {
                  } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
-                }*/
+                }
                 case "/ok": {
                     QueryRunner run = new QueryRunner();
                     Message message = update.getCallbackQuery().getMessage();
