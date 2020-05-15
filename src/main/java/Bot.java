@@ -145,11 +145,11 @@ public class Bot extends TelegramLongPollingBot {
                 case "/user": {
                     SendMessage newM2 = new SendMessage()
                             .setChatId(chat_id)
-                            .setText("dsfsdfdsds");
+                            .setText("rter");
                     execute(newM2);
-
-                    int id_user = message1.getFrom().getId();
-                    String  nam = message1.getFrom().getFirstName();
+                    Message message2 = update.getMessage();
+                    int id_user = message2.getFrom().getId();
+                    String  nam = message2.getFrom().getFirstName();
                     SendMessage newM = new SendMessage()
                             .setChatId(chat_id)
                             .setText(nam +"dsfsdfdsds"+ id_user);
@@ -160,7 +160,7 @@ public class Bot extends TelegramLongPollingBot {
                     try {
                         statement = Db.connecti.createStatement();
                        statement.executeQuery(sql);
-                        sendMsg(message1, "аккаунт добавлен");
+                        sendMsg(message2, "аккаунт добавлен");
                  } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
