@@ -76,8 +76,6 @@ public class Bot extends TelegramLongPollingBot {
             String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
             if (update.getMessage().getText().equals("/start")) {
-
-
                 SendMessage message = new SendMessage() // Create a message object object
                         .setChatId(chat_id)
                         .setText("Что нужно сделать?");
@@ -111,11 +109,7 @@ public class Bot extends TelegramLongPollingBot {
             // Set variables
             String call_data = update.getCallbackQuery().getData();
             String[] data;
-
             data = call_data.split(",");
-
-
-
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
             ///ИСКАТЬ ВАРИАНТ ПОЛУЧЕНИЯ АЙДИ И ИМЕНИ ЧЕРЕЗ АПИ
@@ -138,7 +132,7 @@ public class Bot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                 }
-                case "/add": {
+               /* case "/add": {
                     String id_game = data[1];
                     int id_user = message1.getFrom().getId();
                     Statement statement = null;
@@ -151,8 +145,8 @@ public class Bot extends TelegramLongPollingBot {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
-                }
-
+                }/*
+/*
                 case "/user": {
                     SendMessage newM2 = new SendMessage()
                             .setChatId(chat_id)
@@ -169,7 +163,7 @@ public class Bot extends TelegramLongPollingBot {
                  } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
-                }
+                }*/
                 case "/ok": {
                     QueryRunner run = new QueryRunner();
                     Message message = update.getCallbackQuery().getMessage();
