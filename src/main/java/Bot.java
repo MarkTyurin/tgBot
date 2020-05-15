@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -112,6 +113,10 @@ public class Bot extends TelegramLongPollingBot {
 
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
+            long user_id = update.getCallbackQuery().getMessage().getFrom().getId();
+            String user_name = update.getCallbackQuery().getMessage().getFrom().getFirstName();
+            String user_name2 = update.getCallbackQuery().getMessage().getFrom().getUserName();
+
             // if (call_data.equals("update_msg_text")) {
             switch (data[0]) {
                 case "/start": {
@@ -145,7 +150,7 @@ public class Bot extends TelegramLongPollingBot {
                 case "/user": {
                     SendMessage newM2 = new SendMessage()
                             .setChatId(chat_id)
-                            .setText("rter");
+                            .setText("user_id= "+user_id + "user_n="+user_name+"user_n2="+user_name2);
                     execute(newM2);
                     Message message2 = update.getMessage();
                     int id_user = message2.getFrom().getId();
