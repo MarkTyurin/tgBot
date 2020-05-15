@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 import static java.lang.StrictMath.toIntExact;
 
 public class Bot extends TelegramLongPollingBot {
-    public  String user_username;
-    public  long  u_id;
+    public String user_username;
+    public long u_id;
 
     public static void main(String[] args) {
         ApiContextInitializer.init();
@@ -60,8 +60,7 @@ public class Bot extends TelegramLongPollingBot {
             }
 
 
-
-           // sendMsg(message1,   "user_id= "+u_id + "user_n="+user_username+" user_n2="+user_first_name);
+            // sendMsg(message1,   "user_id= "+u_id + "user_n="+user_username+" user_n2="+user_first_name);
 
             QueryRunner run = new QueryRunner();
 
@@ -83,14 +82,14 @@ public class Bot extends TelegramLongPollingBot {
                 SendMessage message = new SendMessage() // Create a message object object
                         .setChatId(chat_id)
                         .setText("Что нужно сделать?");
-                 user_username = update.getMessage().getChat().getUserName();
-                 u_id = update.getMessage().getChat().getId();
+                user_username = update.getMessage().getChat().getUserName();
+                u_id = update.getMessage().getChat().getId();
                 InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
-              //  rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
+                //  rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
 
-               // rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
+                // rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
 
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
 
@@ -119,9 +118,9 @@ public class Bot extends TelegramLongPollingBot {
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
             ///ИСКАТЬ ВАРИАНТ ПОЛУЧЕНИЯ АЙДИ И ИМЕНИ ЧЕРЕЗ АПИ
-         //   long user_id =  message1.getFrom().getId();
-          //  String user_name =  message1.getFrom().getFirstName();
-          //  String user_name2 =  message1.getFrom().getUserName();
+            //   long user_id =  message1.getFrom().getId();
+            //  String user_name =  message1.getFrom().getFirstName();
+            //  String user_name2 =  message1.getFrom().getUserName();
 
             // if (call_data.equals("update_msg_text")) {
             switch (data[0]) {
@@ -138,45 +137,46 @@ public class Bot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                 }
-               case "/add": {
+                case "/add": {
                     String id_game = data[1];
                     Statement statement = null;
                     String sql;
-                   SendMessage newM2 = new SendMessage()
-                           .setChatId(chat_id);
+                    SendMessage newM2 = new SendMessage()
+                            .setChatId(chat_id);
 
-                    sql = "INSERT INTO user_games (id_user, id_game) VALUES ("+u_id+",'"+id_game+"')";
+                    sql = "INSERT INTO user_games (id_user, id_game) VALUES (" + u_id + ",'" + id_game + "')";
                     try {
                         statement = Db.connecti.createStatement();
                         statement.executeQuery(sql);
+                        newM2.setText("Игра добавлена.");
+                        execute(newM2);
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                         newM2.setText("Не удалось добавить игру.");
-                        execute(newM2);}
-                   newM2.setText("Игра добавлена.");
-                   execute(newM2);
+                        execute(newM2);
+                    }
+
                     break;
 
                 }
 
-              case "/user": {
+                case "/user": {
 
-                  SendMessage newM2 = new SendMessage()
-                          .setChatId(chat_id);
+                    SendMessage newM2 = new SendMessage()
+                            .setChatId(chat_id);
                     Statement statement = null;
                     String sql;
-                   sql = "INSERT INTO users (id, tg_id,nickname) VALUES  ("+u_id+","+u_id+", '"+user_username+"')";
+                    sql = "INSERT INTO users (id, tg_id,nickname) VALUES  (" + u_id + "," + u_id + ", '" + user_username + "')";
                     try {
                         statement = Db.connecti.createStatement();
-                       statement.executeQuery(sql);
-
-                 } catch (SQLException throwables) {
+                        statement.executeQuery(sql);
+                        newM2.setText("Аккаунт добавлен.");
+                        execute(newM2);
+                    } catch (SQLException throwables) {
                         newM2.setText("Не удалось добавить аккаунт.");
                         execute(newM2);
                         throwables.printStackTrace();
                     }
-                  newM2.setText("Аккаунт добавлен.");
-                  execute(newM2);
                     break;
                 }
                 case "/ok": {
@@ -251,10 +251,10 @@ public class Bot extends TelegramLongPollingBot {
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
                     for (Games game : games) {
-                       msg2.setText(game.toString());
+                        msg2.setText(game.toString());
                         //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
                         rowInline.clear();
-                        rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add,"+game.getId()));
+                        rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
                         execute(msg2);
                     }
                     break;
@@ -318,9 +318,7 @@ public class Bot extends TelegramLongPollingBot {
                     rowsInline.add(rowInline);
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-                    rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add" ));
-
-
+                    rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add"));
 
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_universe =" + id_uni, h);
@@ -328,7 +326,7 @@ public class Bot extends TelegramLongPollingBot {
                         SendMessage msg2 = new SendMessage()
                                 .setChatId(chat_id)
                                 .setText(game.toString())
-                          .setReplyMarkup(markupInline);
+                                .setReplyMarkup(markupInline);
                         //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
                         execute(msg2);
                     }
@@ -342,35 +340,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
         }
-        /*
-        if(update.hasMessage()){
-            if(update.getMessage().hasText()){
-                if(update.getMessage().getText().equals("Hello")){
-                    try {
-                        execute(sendInlineKeyBoardMessage(update.getMessage().getChatId()));
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }else if(update.hasCallbackQuery()){
-            try {
-                execute(new SendMessage().setText(
-                        update.getCallbackQuery().getData())
-                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
 
-        /*      Message message = update.getMessage();
-        if (message != null && message.hasText()) {
-            String strMessage = message.getText();
-            strMessage =  Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
-            if (!strMessage.equals("")) {
-                sendMsg(message, strMessage);
-            }
-        }*/
     }
 
     private String getCommand(String command, String message) {
@@ -403,7 +373,7 @@ public class Bot extends TelegramLongPollingBot {
         keyboardFirstRow.add(new KeyboardButton("/coin"));
         keyboardFirstRow.add(new KeyboardButton("/ok"));
         keyboardFirstRow.add(new KeyboardButton("/help"));
-        keyboardFirstRow.add(new KeyboardButton("/add account"));
+        keyboardFirstRow.add(new KeyboardButton("/start"));
 
         //Добавляем кнопки в массив
         keyboardRowList.add(keyboardFirstRow);
