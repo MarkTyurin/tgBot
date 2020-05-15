@@ -85,7 +85,7 @@ public class Bot extends TelegramLongPollingBot {
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
 
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по вселенной").setCallbackData("/universe"));
-                rowInline.add(new InlineKeyboardButton().setText("Внести аккаунт в базу данных").setCallbackData("/add_user"));
+                rowInline.add(new InlineKeyboardButton().setText("Внести аккаунт в базу данных").setCallbackData("/user"));
                 // Set the keyboard to the markup
                 rowsInline.add(rowInline);
 
@@ -139,7 +139,7 @@ public class Bot extends TelegramLongPollingBot {
                     break;
                 }
 
-                case "/add_user": {
+                case "/user": {
                     SendMessage newM2 = new SendMessage()
                             .setText("dsfsdfdsds");
                     execute(newM2);
