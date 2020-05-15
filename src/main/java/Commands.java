@@ -24,16 +24,9 @@ public class Commands {
                 return message.replaceAll(" ", "");
 
 
-            case "/ok": {
-                QueryRunner run = new QueryRunner();
-                ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-                String str = "";
-                List<Games> games = run.query(Db.connecti, "SELECT * FROM Games", h);
-                for (Games game : games) {
-                    str += game.toString();
-                }
+            case "/hi": {
 
-                return " " + str + "//";
+                return " Вас приветствует бот-помошник. ";
             }
             case "/coin":
                 return "И выпадает: " + (new Random().nextInt(2) == 0 ? "Орёл" : "Решка");

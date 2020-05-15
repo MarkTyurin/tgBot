@@ -217,9 +217,6 @@ public class Bot extends TelegramLongPollingBot {
 
                 case "/find_genre": {
                     String genre = data[1];
-
-                    //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
-
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
                     Statement statement = null;
@@ -275,6 +272,7 @@ public class Bot extends TelegramLongPollingBot {
                     markupInline.setKeyboard(rowsInline);
                     List<Universe> universes = run.query(Db.connecti, "SELECT * FROM Universe", h);
                     for (Universe universe : universes) {
+                        rowInline.clear();
                         rowInline.add(new InlineKeyboardButton().setText(universe.getName()).setCallbackData("/find_universe," + universe.getName()));
                     }
                     EditMessageText new_message = new EditMessageText()
@@ -293,8 +291,6 @@ public class Bot extends TelegramLongPollingBot {
                 case "/find_universe": {
                     String uni = data[1];
 
-                    //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
-
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
                     Statement statement = null;
@@ -311,23 +307,19 @@ public class Bot extends TelegramLongPollingBot {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
                     rowsInline.add(rowInline);
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-                    rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add"));
-
-
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_universe =" + id_uni, h);
                     for (Games game : games) {
                         SendMessage msg2 = new SendMessage()
                                 .setChatId(chat_id)
                                 .setText(game.toString())
                                 .setReplyMarkup(markupInline);
-                        //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
+                        rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
                         execute(msg2);
                     }
                     break;
@@ -371,7 +363,7 @@ public class Bot extends TelegramLongPollingBot {
 
         //Добавляем кнопки
         keyboardFirstRow.add(new KeyboardButton("/coin"));
-        keyboardFirstRow.add(new KeyboardButton("/ok"));
+        keyboardFirstRow.add(new KeyboardButton("/hi"));
         keyboardFirstRow.add(new KeyboardButton("/help"));
         keyboardFirstRow.add(new KeyboardButton("/start"));
 
@@ -408,34 +400,4 @@ public class Bot extends TelegramLongPollingBot {
         return "1216338158:AAFQUTpEJe7fkD9VFN3wnAxd5YjzV2q1a9M";
     }
 
-
-    private void setInline() {
-        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-        List<InlineKeyboardButton> buttons1 = new ArrayList<>();
-        buttons1.add(new InlineKeyboardButton().setText("Кнопка").setCallbackData("17"));
-        buttons.add(buttons1);
-
-        InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
-        markupKeyboard.setKeyboard(buttons);
-    }
-
-    public static SendMessage sendInlineKeyBoardMessage(long chatId) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
-        inlineKeyboardButton1.setText("Тык");
-        inlineKeyboardButton1.setCallbackData("Button \"Тык\" has been pressed");
-        inlineKeyboardButton2.setText("Тык2");
-        inlineKeyboardButton2.setCallbackData("Button \"Тык2\" has been pressed");
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow1.add(inlineKeyboardButton1);
-        keyboardButtonsRow1.add(new InlineKeyboardButton().setText("Fi4a").setCallbackData("CallFi4a"));
-        keyboardButtonsRow2.add(inlineKeyboardButton2);
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-        inlineKeyboardMarkup.setKeyboard(rowList);
-        return new SendMessage().setChatId(chatId).setText("Пример").setReplyMarkup(inlineKeyboardMarkup);
-    }
 }
