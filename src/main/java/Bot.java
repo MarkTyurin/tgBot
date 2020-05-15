@@ -151,7 +151,7 @@ public class Bot extends TelegramLongPollingBot {
                         throwables.printStackTrace(); }
                     break;
                 }
-
+/*
               case "/user": {
 
 
@@ -169,7 +169,7 @@ public class Bot extends TelegramLongPollingBot {
                  } catch (SQLException throwables) {
                         throwables.printStackTrace(); }
                     break;
-                }
+                }*/
                 case "/ok": {
                     QueryRunner run = new QueryRunner();
                     Message message = update.getCallbackQuery().getMessage();
