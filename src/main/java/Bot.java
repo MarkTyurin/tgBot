@@ -48,11 +48,11 @@ public class Bot extends TelegramLongPollingBot {
     {
 
         Message message1 = update.getMessage();
-   /*   String user_first_name = update.getMessage().getChat().getFirstName();
+        String user_first_name = update.getMessage().getChat().getFirstName();
         String user_last_name = update.getMessage().getChat().getLastName();
         String user_username = update.getMessage().getChat().getUserName();
         long u_id = update.getMessage().getChat().getId();
-*/
+
         if (message1 != null && message1.hasText()) {
             String strMessage = message1.getText();
             strMessage = Commands.getCommands(getMessage(strMessage), getCommand(strMessage, getMessage(strMessage)));
