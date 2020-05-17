@@ -87,12 +87,8 @@ public class Bot extends TelegramLongPollingBot {
                 InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                //  rowInline.add(new InlineKeyboardButton().setText("Update message text").setCallbackData("update_msg_text"));
-
-                // rowInline.add(new InlineKeyboardButton().setText("ok").setCallbackData("/ok"));
 
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
-
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по вселенной").setCallbackData("/universe"));
                 rowInline.add(new InlineKeyboardButton().setText("Внести аккаунт в базу данных").setCallbackData("/user"));
                 rowInline.add(new InlineKeyboardButton().setText("Вывести список моих игр").setCallbackData("/user_games"));
