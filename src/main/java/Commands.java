@@ -26,7 +26,7 @@ public class Commands {
 
             case "/hi": {
 
-                return " Вас /**/приветствует/**/ бот-помошник. ";
+                return " __Вас__ **приветствует** бот-помошник. ";
             }
             case "/coin":
                 return "И выпадает: " + (new Random().nextInt(2) == 0 ? "Орёл" : "Решка");
