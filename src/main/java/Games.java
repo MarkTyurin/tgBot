@@ -148,8 +148,8 @@ public class Games implements Serializable {
         }
 
         return "__" + name+"__" +
-                "\nВселенная: " + "**" +universe +"**" +
-                "\nЖанр: " +"__" + genre +"__" +
+                "\n__Вселенная__: " + "**" +universe +"**" +
+                "\n**Жанр**: " +"__" + genre +"__" +
                 "\nКраткое описание: " +description +
                 "\nКоличество игроков: " + number_players +
                 "\nДата выхода: " + release_date +
