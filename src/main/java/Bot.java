@@ -125,6 +125,7 @@ public class Bot extends TelegramLongPollingBot {
                     String answer = "Updated message text";
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
+                            .enableMarkdown(true)
                             .setMessageId(toIntExact(message_id))
                             .setText(answer);
                     try {
@@ -139,6 +140,7 @@ public class Bot extends TelegramLongPollingBot {
                     Statement statement = null;
                     String sql;
                     SendMessage newM2 = new SendMessage()
+                            .enableMarkdown(true)
                             .setChatId(chat_id);
 
                     sql = "INSERT INTO user_games (id_user, id_game) VALUES (" + u_id + ",'" + id_game + "')";
@@ -160,6 +162,7 @@ public class Bot extends TelegramLongPollingBot {
                 case "/user": {
 
                     SendMessage newM2 = new SendMessage()
+                            .enableMarkdown(true)
                             .setChatId(chat_id);
                     Statement statement = null;
                     String sql;
@@ -203,6 +206,7 @@ public class Bot extends TelegramLongPollingBot {
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
                             .setText("Выбор жанра")
+                            .enableMarkdown(true)
                             .setReplyMarkup(markupInline);
                     try {
                         execute(new_message);
@@ -240,7 +244,7 @@ public class Bot extends TelegramLongPollingBot {
 
                     SendMessage msg2 = new SendMessage()
                             .setChatId(chat_id)
-
+                            .enableMarkdown(true)
                             .setReplyMarkup(markupInline);
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
@@ -276,6 +280,7 @@ public class Bot extends TelegramLongPollingBot {
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
                             .setText("Выбор вселенной")
+                            .enableMarkdown(true)
                             .setReplyMarkup(markupInline);
                     try {
                         execute(new_message);
@@ -314,6 +319,7 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                         SendMessage msg2 = new SendMessage()
                                 .setChatId(chat_id)
+                                .enableMarkdown(true)
                                 .setText(game.toString())
                                 .setReplyMarkup(markupInline);
                         rowInline.clear();
@@ -348,7 +354,8 @@ public class Bot extends TelegramLongPollingBot {
                                 SendMessage msg2 = new SendMessage()
                                         .setChatId(chat_id)
                                         .setText(game.getName()+"\n"+game.getLink()+"\n")
-                                        .setReplyMarkup(markupInline);
+                                        .setReplyMarkup(markupInline)
+                               .enableMarkdown(true);
                                 rowInline.clear();
                                 rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId()+","+u_id));
                                 execute(msg2);
@@ -413,7 +420,7 @@ public class Bot extends TelegramLongPollingBot {
     private void sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
-        sendMessage.setParseMode("Markdown");
+
 
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setReplyToMessageId(message.getMessageId());
