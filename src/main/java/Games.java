@@ -147,9 +147,9 @@ public class Games implements Serializable {
             throwables.printStackTrace();
         }
 
-        return  name+"__" +
-                "\nВселенная__: " + "**" +universe +"**" +
-                "\nЖанр: " +"__" + genre +"__" +
+        return  "_"+name+"_" +
+                "\nВселенная: " + "*" +universe +"*" +
+                "\nЖанр: " +"_" + genre +"_" +
                 "\nКраткое описание: " +description +
                 "\nКоличество игроков: " + number_players +
                 "\nДата выхода: " + release_date +
