@@ -151,9 +151,9 @@ public class Games implements Serializable {
                 "\nВселенная: " + "*" +universe +"*" +
                 "\nЖанр: " +"_" + genre +"_" +
                 "\nКраткое описание: " +description +
-                "\nКоличество игроков: " + number_players +
-                "\nДата выхода: " + release_date +
-                "\nРейтинг: " + rating +
+                "\nКоличество игроков: " + "*"+ number_players + "*"+
+                "\nДата выхода: " + "*"+ release_date + "*"+
+                "\nРейтинг: " + "*"+ rating + "*"+
 
                 "\n" + link;
     }

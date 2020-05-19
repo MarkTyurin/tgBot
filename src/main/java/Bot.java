@@ -195,12 +195,14 @@ public class Bot extends TelegramLongPollingBot {
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                    rowsInline.add(rowInline);
+
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
                     List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                     for (Genre genre : genres) {
                         rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre," + genre.getName()));
+                        rowsInline.add(rowInline);
+
                     }
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
