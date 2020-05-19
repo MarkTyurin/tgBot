@@ -196,14 +196,14 @@ public class Bot extends TelegramLongPollingBot {
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                  //  rowsInline.add(rowInline);
+                   // rowsInline.add(rowInline);
                     rowsInline.add(rowInline2);
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
                     List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                     for (Genre genre : genres) {
                      ///   rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre," + genre.getName()));
-                        rowInline2.add(new InlineKeyboardButton().setText("***************"));
+                        rowInline2.add(new InlineKeyboardButton().setText( genre.getName() +"***************").setCallbackData("sss"));
 
                     }
                     EditMessageText new_message = new EditMessageText()
