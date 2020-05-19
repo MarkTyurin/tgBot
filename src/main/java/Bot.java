@@ -203,7 +203,7 @@ public class Bot extends TelegramLongPollingBot {
                     List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                     for (Genre genre : genres) {
                         rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre," + genre.getName()));
-                        rowInline2.add(new InlineKeyboardButton().setText("\n"));
+                        rowInline2.add(new InlineKeyboardButton().setText("***************"));
 
                     }
                     EditMessageText new_message = new EditMessageText()
