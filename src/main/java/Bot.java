@@ -87,13 +87,19 @@ public class Bot extends TelegramLongPollingBot {
                 InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                 List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+                List<InlineKeyboardButton> rowInline3 = new ArrayList<>();
+                List<InlineKeyboardButton> rowInline4 = new ArrayList<>();
 
                 rowInline.add(new InlineKeyboardButton().setText("Поиск по жанру").setCallbackData("/genre"));
-                rowInline.add(new InlineKeyboardButton().setText("Поиск по вселенной").setCallbackData("/universe"));
-                rowInline.add(new InlineKeyboardButton().setText("Внести аккаунт в базу данных").setCallbackData("/user"));
-                rowInline.add(new InlineKeyboardButton().setText("Вывести список моих игр").setCallbackData("/user_games"));
+                rowInline2.add(new InlineKeyboardButton().setText("Поиск по вселенной").setCallbackData("/universe"));
+                rowInline3.add(new InlineKeyboardButton().setText("Внести аккаунт в базу данных").setCallbackData("/user"));
+                rowInline4.add(new InlineKeyboardButton().setText("Вывести список моих игр").setCallbackData("/user_games"));
                 // Set the keyboard to the markup
                 rowsInline.add(rowInline);
+                rowsInline.add(rowInline2);
+                rowsInline.add(rowInline3);
+                rowsInline.add(rowInline4);
 
                 // Add it to the message
                 markupInline.setKeyboard(rowsInline);
@@ -269,14 +275,15 @@ public class Bot extends TelegramLongPollingBot {
                     ///Кнопки под сообщением
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                    rowsInline.add(rowInline);
+
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
                     List<Universe> universes = run.query(Db.connecti, "SELECT * FROM Universe", h);
                     for (Universe universe : universes) {
-
+                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                        
                         rowInline.add(new InlineKeyboardButton().setText(universe.getName()).setCallbackData("/find_universe," + universe.getName()));
+                        rowsInline.add(rowInline);
                     }
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
