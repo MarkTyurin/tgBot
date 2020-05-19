@@ -192,16 +192,17 @@ public class Bot extends TelegramLongPollingBot {
                 case "/genre": {
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Genre>> h = new BeanListHandler<Genre>(Genre.class);
-                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                    List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                    rowsInline.add(rowInline);
-                    rowsInline.add(rowInline2);
-                    // Add it to the message
-                    markupInline.setKeyboard(rowsInline);
+
                     List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                     for (Genre genre : genres) {
+                        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                        List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+                        rowsInline.add(rowInline);
+                        rowsInline.add(rowInline2);
+                        // Add it to the message
+                        markupInline.setKeyboard(rowsInline);
                         rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre," + genre.getName()));
                         rowInline2.add(new InlineKeyboardButton().setText( "***************").setCallbackData("sss"));
 
