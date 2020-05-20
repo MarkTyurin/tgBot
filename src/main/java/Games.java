@@ -147,13 +147,13 @@ public class Games implements Serializable {
             throwables.printStackTrace();
         }
 
-        return  "_"+name+"_" +
-                "\nВселенная: " + "*" +universe +"*" +
-                "\nЖанр: " +"_" + genre +"_" +
-                "\nКраткое описание: " +description +
-                "\nКоличество игроков: " + "*"+ number_players + "*"+
-                "\nДата выхода: " + "*"+ release_date + "*"+
-                "\nРейтинг: " + "*"+ rating + "*"+
+        return  "_*"+name+"*_" +
+                "\n*Вселенная*: " + "*" +universe +"*" +
+                "\n*Жанр*: " +"*" + genre +"*" +
+                "\n*Краткое описание*: "+"_" +description+"_" +
+                "\n*Количество игроков*: " + "*"+ number_players + "*"+
+                "\n*Дата выхода*: " + "*"+ release_date + "*"+
+                "\n*Рейтинг*: " + "*"+ rating + "*"+
 
                 "\n" + link;
     }

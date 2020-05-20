@@ -281,7 +281,7 @@ public class Bot extends TelegramLongPollingBot {
                     List<Universe> universes = run.query(Db.connecti, "SELECT * FROM Universe", h);
                     for (Universe universe : universes) {
                         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                        
+
                         rowInline.add(new InlineKeyboardButton().setText(universe.getName()).setCallbackData("/find_universe," + universe.getName()));
                         rowsInline.add(rowInline);
                     }
