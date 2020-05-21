@@ -224,7 +224,67 @@ public class Bot extends TelegramLongPollingBot {
                     }
                 }
 
+
+
                 case "/find_genre": {
+                    String genre = data[1];
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                    Statement statement = null;
+                    String sql;
+                    int id_genre = 1000;
+                    sql = "SELECT id FROM Genre Where name  ='" + genre + "'";
+                    try {
+                        // connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                        statement = Db.connecti.createStatement();
+                        ResultSet resultSet = statement.executeQuery(sql);
+                        while (resultSet.next())
+                            id_genre = resultSet.getInt("id");
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+
+
+                    // Add it to the message
+                    markupInline.setKeyboard(rowsInline);
+
+                    EditMessageText new_message = new EditMessageText()
+                            .setChatId(chat_id)
+                            .setMessageId(toIntExact(message_id))
+                            .setText("Нажмите на заинтересовашую игру")
+                            .enableMarkdown(true)
+                            .setReplyMarkup(markupInline);
+
+                    List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
+                  //  for (Games game : games) {
+                        for (int i=0;i <=games.size(); i++) {
+                            Games game1 = games.get(i);
+                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                        rowInline.add(new InlineKeyboardButton().setText(game1.getName()).setCallbackData("/find_genre3," + game1.getId()));
+                        rowsInline.add(rowInline);
+
+                    }
+
+                    execute(new_message);
+                    break;
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+                case "/find_genre2": {
                     String genre = data[1];
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
