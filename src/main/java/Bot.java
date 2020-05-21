@@ -251,7 +251,7 @@ public class Bot extends TelegramLongPollingBot {
 
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-                    int i=0, j=0, k=6;
+                    int i=0, j=2, k=6;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
