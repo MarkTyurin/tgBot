@@ -258,9 +258,9 @@ public class Bot extends TelegramLongPollingBot {
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
                     if(j>=5)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id_genre+"," + k+"," + j+"Genre"));
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id_genre+"," + k+"," + j+",Genre"));
                     if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id_genre+","+ k+"," + j+"Genre"));
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id_genre+","+ k+"," + j+",Genre"));
                     rowsInline.add(rowInline2);
                     execute(new_message);
                     break;
@@ -365,9 +365,9 @@ public class Bot extends TelegramLongPollingBot {
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
                     if(j>=5)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id+"," + k+"," + j+nametable));
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id+"," + k+"," + j+","+nametable));
                     if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id+","+ k+"," + j+nametable));
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id+","+ k+"," + j+","+nametable));
 
                     rowsInline.add(rowInline2);
                     execute(new_message);
