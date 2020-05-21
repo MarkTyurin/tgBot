@@ -251,7 +251,7 @@ public class Bot extends TelegramLongPollingBot {
 
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-
+                    int i=0, j=0, k=2;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
@@ -261,10 +261,12 @@ public class Bot extends TelegramLongPollingBot {
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
                     for (Games game : games) {
-
+                            if(i>=j && i<k){
                         List<InlineKeyboardButton> rowInline = new ArrayList<>();
                         rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/find_genre3," + game.getId()));
                         rowsInline.add(rowInline);
+                            }
+                        i++;
 
                     }
 
