@@ -269,7 +269,11 @@ public class Bot extends TelegramLongPollingBot {
                         i++;
 
                     }
+                    List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+                    rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/find_genre3," + i));
+                    rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/find_genre3," + i));
 
+                    rowsInline.add(rowInline2);
                     execute(new_message);
                     break;
 
