@@ -487,9 +487,9 @@ public class Bot extends TelegramLongPollingBot {
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
                     if(j>=5)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id_uni+"," + k+"," + j+"Universe"));
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id_uni+"," + k+"," + j+","+"Universe"));
                     if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id_uni+","+ k+"," + j+"Universe"));
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id_uni+","+ k+"," + j+","+"Universe"));
                     rowsInline.add(rowInline2);
                     execute(new_message);
                     break;
