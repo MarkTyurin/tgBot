@@ -491,7 +491,7 @@ public class Bot extends TelegramLongPollingBot {
                                 .setText(game.toString())
                                 .setReplyMarkup(markupInline);
                         rowInline.clear();
-                        rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
+                        rowInline.add(new InlineKeyboardButton().setText("Добавить  мой список").setCallbackData("/add," + game.getId()));
                         execute(msg2);
                     }
                     break;
@@ -525,6 +525,9 @@ public class Bot extends TelegramLongPollingBot {
                                         .setReplyMarkup(markupInline)
                                .enableMarkdown(true);
                                 rowInline.clear();
+
+
+
                                 rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId()+","+u_id));
                                 execute(msg2);
                             }
