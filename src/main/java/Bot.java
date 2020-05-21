@@ -373,7 +373,9 @@ public class Bot extends TelegramLongPollingBot {
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                    List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
                     rowsInline.add(rowInline);
+                    rowsInline.add(rowInline2);
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id =" + id_game, h);
@@ -385,6 +387,22 @@ public class Bot extends TelegramLongPollingBot {
                                 .setReplyMarkup(markupInline);
                         rowInline.clear();
                         rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
+                        rowInline2.add(new InlineKeyboardButton().setText("Вывести дополнения").setCallbackData("/find_add," + game.getId()));
+                        execute(msg2);
+                    }
+                    break;
+                }
+
+                case "/send_add": {
+                    String id_add = data[1];
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Additions>> h = new BeanListHandler<Additions>(Additions.class);
+                    List<Additions> adds = run.query(Db.connecti, "SELECT * FROM Additions where id =" + id_add, h);
+                    for (Additions add : adds) {
+                        SendMessage msg2 = new SendMessage()
+                                .setChatId(chat_id)
+                                .enableMarkdown(true)
+                                .setText(add.toString());
                         execute(msg2);
                     }
                     break;
@@ -394,6 +412,32 @@ public class Bot extends TelegramLongPollingBot {
 
 
 
+
+                case "/find_add": {
+                   String id = data[1];
+                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                    // Add it to the message
+                    markupInline.setKeyboard(rowsInline);
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Additions>> h = new BeanListHandler<Additions>(Additions.class);
+                    SendMessage msg2 = new SendMessage()
+                            .setChatId(chat_id)
+                            .setText("Список дополнений")
+                            .setReplyMarkup(markupInline)
+                            .enableMarkdown(true);
+                            List<Additions> adds = run.query(Db.connecti, "SELECT * FROM additions Where id_game  =" +  id, h);
+                            for (Additions add : adds) {
+                                List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                                rowInline.add(new InlineKeyboardButton().setText(add.getName()).setCallbackData("/send_add," + add.getId()));
+                                rowsInline.add(rowInline);
+                            }
+                            execute(msg2);
+                    break;
+
+
+
+                }
 
 
 
@@ -465,6 +509,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
                 }
+
                 case "/user_games": {
                      Statement statement = null;
                     String sql;
