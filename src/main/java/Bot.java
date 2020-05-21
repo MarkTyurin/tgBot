@@ -206,7 +206,7 @@ public class Bot extends TelegramLongPollingBot {
                     List<Genre> genres = run.query(Db.connecti, "SELECT * FROM Genre", h);
                     for (Genre genre : genres) {
                         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                        rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre," + genre.getName()));
+                        rowInline.add(new InlineKeyboardButton().setText(genre.getName()).setCallbackData("/find_genre," + genre.getId()));
                         rowsInline.add(rowInline);
 
                     }
@@ -227,23 +227,10 @@ public class Bot extends TelegramLongPollingBot {
 
 
                 case "/find_genre": {
-                    String genre = data[1];
+                    String id_genre = data[1];
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-                    Statement statement = null;
-                    String sql;
-                    int id_genre = 1000;
-                    sql = "SELECT id FROM Genre Where name  ='" + genre + "'";
-                    try {
-                        // connection = DriverManager.getConnection(DB_URL, USER, PASS);
-                        statement = Db.connecti.createStatement();
-                        ResultSet resultSet = statement.executeQuery(sql);
-                        while (resultSet.next())
-                            id_genre = resultSet.getInt("id");
 
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
 
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
@@ -271,9 +258,9 @@ public class Bot extends TelegramLongPollingBot {
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
                     if(j>=5)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+genre+"," + k+"," + j+"Genre"));
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id_genre+"," + k+"," + j+"Genre"));
                     if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +genre+","+ k+"," + j+"Genre"));
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id_genre+","+ k+"," + j+"Genre"));
                     rowsInline.add(rowInline2);
                     execute(new_message);
                     break;
@@ -345,24 +332,11 @@ public class Bot extends TelegramLongPollingBot {
                 case "/forward": {
                     int kk =Integer.parseInt(data[2]);
                     int jj = Integer.parseInt(data[3]);
-                    String name = data[1];
+                    String id = data[1];
                     String nametable = data[4];
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-                    Statement statement = null;
-                    String sql;
-                    int id_genre = 1000;
-                    sql = "SELECT id FROM"+nametable +"  Where name  ='" + name + "'";
-                    try {
-                        // connection = DriverManager.getConnection(DB_URL, USER, PASS);
-                        statement = Db.connecti.createStatement();
-                        ResultSet resultSet = statement.executeQuery(sql);
-                        while (resultSet.next())
-                            id_genre = resultSet.getInt("id");
 
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
 
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
@@ -377,9 +351,9 @@ public class Bot extends TelegramLongPollingBot {
 
                     List<Games> games = new ArrayList<>();
                     if (nametable.equals("Genre"))
-                        games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
+                        games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id, h);
                     else
-                        games = run.query(Db.connecti, "SELECT * FROM Games where id_universe =" + id_genre, h);
+                        games = run.query(Db.connecti, "SELECT * FROM Games where id_universe =" + id, h);
                     for (Games game : games) {
                         if(i>=j && i<k){
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
@@ -391,9 +365,9 @@ public class Bot extends TelegramLongPollingBot {
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
                     if(j>=5)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+name+"," + k+"," + j+nametable));
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id+"," + k+"," + j+nametable));
                     if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +name+","+ k+"," + j+nametable));
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id+","+ k+"," + j+nametable));
 
                     rowsInline.add(rowInline2);
                     execute(new_message);
