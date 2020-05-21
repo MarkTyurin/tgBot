@@ -260,11 +260,10 @@ public class Bot extends TelegramLongPollingBot {
                             .setReplyMarkup(markupInline);
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
-                  //  for (Games game : games) {
-                        for (int i=0;i <=games.size(); i++) {
-                            Games game1 = games.get(i);
+                    for (Games game : games) {
+
                         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                        rowInline.add(new InlineKeyboardButton().setText(game1.getName()).setCallbackData("/find_genre3," + game1.getId()));
+                        rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/find_genre3," + game.getId()));
                         rowsInline.add(rowInline);
 
                     }
