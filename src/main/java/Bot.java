@@ -270,8 +270,8 @@ public class Bot extends TelegramLongPollingBot {
 
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                    rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/find_genre3," + i));
-                    rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/find_genre3," + i));
+                    rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+genre+"," + k+"," + j));
+                    rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +genre+","+ k+"," + j));
 
                     rowsInline.add(rowInline2);
                     execute(new_message);
@@ -281,15 +281,9 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
 
-
-
-
-
-
-
-
-
-                case "/find_genre2": {
+                case "/back": {
+                    int kk =Integer.parseInt(data[2]);
+                    int jj = Integer.parseInt(data[3]);
                     String genre = data[1];
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
@@ -310,28 +304,99 @@ public class Bot extends TelegramLongPollingBot {
 
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                    rowsInline.add(rowInline);
-                    // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-
-                    SendMessage msg2 = new SendMessage()
+                    int i=0, j=jj-5, k=kk-5;
+                    EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
+                            .setMessageId(toIntExact(message_id))
+                            .setText("Нажмите на заинтересовашую игру")
                             .enableMarkdown(true)
                             .setReplyMarkup(markupInline);
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
                     for (Games game : games) {
-                        msg2.setText(game.toString());
-                        //rowInline.add(new InlineKeyboardButton().setText( genre.getName()).setCallbackData("/find_genre"));
-                        rowInline.clear();
-                        rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
-                        execute(msg2);
+                        if(i>=j && i<k){
+                            List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/find_genre3," + game.getId()));
+                            rowsInline.add(rowInline);
+                        }
+                        i++;
+
                     }
+                    List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+                    if(j>=5)
+                    rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back," + i));
+                    if(k<games.size())
+                    rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," + i));
+
+                    rowsInline.add(rowInline2);
+                    execute(new_message);
                     break;
 
 
                 }
+
+
+                case "/forward": {
+                    int kk =Integer.parseInt(data[2]);
+                    int jj = Integer.parseInt(data[3]);
+                    String genre = data[1];
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                    Statement statement = null;
+                    String sql;
+                    int id_genre = 1000;
+                    sql = "SELECT id FROM Genre Where name  ='" + genre + "'";
+                    try {
+                        // connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                        statement = Db.connecti.createStatement();
+                        ResultSet resultSet = statement.executeQuery(sql);
+                        while (resultSet.next())
+                            id_genre = resultSet.getInt("id");
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                    markupInline.setKeyboard(rowsInline);
+                    int i=0, j=jj+5, k=kk+5;
+                    EditMessageText new_message = new EditMessageText()
+                            .setChatId(chat_id)
+                            .setMessageId(toIntExact(message_id))
+                            .setText("Нажмите на заинтересовашую игру")
+                            .enableMarkdown(true)
+                            .setReplyMarkup(markupInline);
+
+                    List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
+                    for (Games game : games) {
+                        if(i>=j && i<k){
+                            List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/find_genre3," + game.getId()));
+                            rowsInline.add(rowInline);
+                        }
+                        i++;
+
+                    }
+                    List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+                    if(j>=5)
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back," + i));
+                    if(k<games.size())
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," + i));
+
+                    rowsInline.add(rowInline2);
+                    execute(new_message);
+                    break;
+
+
+                }
+
+
+
+
+
+
 
 
                 case "/universe": {
