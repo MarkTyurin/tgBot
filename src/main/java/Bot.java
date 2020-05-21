@@ -238,7 +238,7 @@ public class Bot extends TelegramLongPollingBot {
 
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-                    int i=0, j=0, k=5;
+                    int i=0, j=0, k=2;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
@@ -341,7 +341,7 @@ public class Bot extends TelegramLongPollingBot {
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     markupInline.setKeyboard(rowsInline);
-                    int i=0, j=jj+5, k=kk+5;
+                    int i=0, j=jj+2, k=kk+2;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
@@ -466,7 +466,7 @@ public class Bot extends TelegramLongPollingBot {
 
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-                    int i=0, j=0, k=5;
+                    int i=0, j=0, k=2;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
