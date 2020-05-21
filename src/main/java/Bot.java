@@ -263,16 +263,17 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                             if(i>=j && i<k){
                         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                        rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/find_genre3," + game.getId()));
+                        rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
                         rowsInline.add(rowInline);
                             }
                         i++;
 
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                    rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+genre+"," + k+"," + j));
-                    rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +genre+","+ k+"," + j));
-
+                    if(j>=5)
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+genre+"," + k+"," + j));
+                    if(k<games.size())
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +genre+","+ k+"," + j));
                     rowsInline.add(rowInline2);
                     execute(new_message);
                     break;
@@ -317,7 +318,7 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                         if(i>=j && i<k){
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/find_genre3," + game.getId()));
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
                             rowsInline.add(rowInline);
                         }
                         i++;
@@ -373,7 +374,7 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                         if(i>=j && i<k){
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/find_genre3," + game.getId()));
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
                             rowsInline.add(rowInline);
                         }
                         i++;
@@ -392,7 +393,35 @@ public class Bot extends TelegramLongPollingBot {
 
                 }
 
+                case "/send_game": {
+                    String id_game = data[1];
 
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+                    Statement statement = null;
+                    String sql;
+
+                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                    rowsInline.add(rowInline);
+                    // Add it to the message
+                    markupInline.setKeyboard(rowsInline);
+                    List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id =" + id_game, h);
+                    for (Games game : games) {
+                        SendMessage msg2 = new SendMessage()
+                                .setChatId(chat_id)
+                                .enableMarkdown(true)
+                                .setText(game.toString())
+                                .setReplyMarkup(markupInline);
+                        rowInline.clear();
+                        rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
+                        execute(msg2);
+                    }
+                    break;
+
+
+                }
 
 
 
