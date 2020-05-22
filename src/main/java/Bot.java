@@ -148,15 +148,19 @@ public class Bot extends TelegramLongPollingBot {
                     SendMessage newM2 = new SendMessage()
                             .enableMarkdown(true)
                             .setChatId(chat_id);
-
+                    int i = 454;
                     sql = "INSERT INTO user_games (id_user, id_game) VALUES (" + u_id + ",'" + id_game + "')";
                     try {
                         statement = Db.connecti.createStatement();
                         statement.executeQuery(sql);
                         newM2.setText("Игра добавлена.");
                         execute(newM2);
+                        i = 0;
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
+
+                    }
+                    if (i != 0) {
                         newM2.setText("Не удалось добавить игру.");
                         execute(newM2);
                     }
@@ -170,17 +174,23 @@ public class Bot extends TelegramLongPollingBot {
                             .setChatId(chat_id);
                     Statement statement = null;
                     String sql;
+                    int i = 43;
                     sql = "INSERT INTO users (id, tg_id,nickname) VALUES  (" + u_id + "," + u_id + ", '" + user_username + "')";
                     try {
                         statement = Db.connecti.createStatement();
                         statement.executeQuery(sql);
                         newM2.setText("Аккаунт добавлен.");
                         execute(newM2);
+                        i = 0;
                     } catch (SQLException throwables) {
-                        newM2.setText("Не удалось добавить аккаунт.");
-                        execute(newM2);
+
                         throwables.printStackTrace();
                     }
+                    if (i != 0) {
+                        newM2.setText("Не удалось добавить аккаунт.");
+                        execute(newM2);
+                    }
+
                     break;
                 }
                 case "/ok": {
@@ -231,7 +241,7 @@ public class Bot extends TelegramLongPollingBot {
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-                    int i=0, j=0, k=3;
+                    int i = 0, j = 0, k = 3;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
@@ -241,19 +251,19 @@ public class Bot extends TelegramLongPollingBot {
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_genre =" + id_genre, h);
                     for (Games game : games) {
-                            if(i>=j && i<k){
-                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                        rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
-                        rowsInline.add(rowInline);
-                            }
+                        if (i >= j && i < k) {
+                            List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
+                            rowsInline.add(rowInline);
+                        }
                         i++;
 
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                    if(j>=3)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id_genre+"," + k+"," + j+",Genre"));
-                    if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id_genre+","+ k+"," + j+",Genre"));
+                    if (j >= 3)
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back," + id_genre + "," + k + "," + j + ",Genre"));
+                    if (k < games.size())
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," + id_genre + "," + k + "," + j + ",Genre"));
                     rowsInline.add(rowInline2);
                     execute(new_message);
                     break;
@@ -263,7 +273,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
                 case "/back": {
-                    int kk =Integer.parseInt(data[2]);
+                    int kk = Integer.parseInt(data[2]);
                     int jj = Integer.parseInt(data[3]);
                     String id = data[1];
                     String nametable = data[4];
@@ -274,7 +284,7 @@ public class Bot extends TelegramLongPollingBot {
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     markupInline.setKeyboard(rowsInline);
-                    int i=0, j=jj-3, k=kk-3;
+                    int i = 0, j = jj - 3, k = kk - 3;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
@@ -288,7 +298,7 @@ public class Bot extends TelegramLongPollingBot {
                     else
                         games = run.query(Db.connecti, "SELECT * FROM Games where id_universe =" + id, h);
                     for (Games game : games) {
-                        if(i>=j && i<k){
+                        if (i >= j && i < k) {
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
                             rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
                             rowsInline.add(rowInline);
@@ -297,10 +307,10 @@ public class Bot extends TelegramLongPollingBot {
 
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                    if(j>=3)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id+"," + k+"," + j+","+nametable));
-                    if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id+","+ k+"," + j+","+nametable));
+                    if (j >= 3)
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back," + id + "," + k + "," + j + "," + nametable));
+                    if (k < games.size())
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," + id + "," + k + "," + j + "," + nametable));
 
                     rowsInline.add(rowInline2);
                     execute(new_message);
@@ -309,7 +319,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
                 case "/forward": {
-                    int kk =Integer.parseInt(data[2]);
+                    int kk = Integer.parseInt(data[2]);
                     int jj = Integer.parseInt(data[3]);
                     String id = data[1];
                     String nametable = data[4];
@@ -320,7 +330,7 @@ public class Bot extends TelegramLongPollingBot {
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     markupInline.setKeyboard(rowsInline);
-                    int i=0, j=jj+3, k=kk+3;
+                    int i = 0, j = jj + 3, k = kk + 3;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
@@ -334,7 +344,7 @@ public class Bot extends TelegramLongPollingBot {
                     else
                         games = run.query(Db.connecti, "SELECT * FROM Games where id_universe =" + id, h);
                     for (Games game : games) {
-                        if(i>=j && i<k){
+                        if (i >= j && i < k) {
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
                             rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
                             rowsInline.add(rowInline);
@@ -343,10 +353,10 @@ public class Bot extends TelegramLongPollingBot {
 
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                    if(j>=3)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id+"," + k+"," + j+","+nametable));
-                    if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id+","+ k+"," + j+","+nametable));
+                    if (j >= 3)
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back," + id + "," + k + "," + j + "," + nametable));
+                    if (k < games.size())
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," + id + "," + k + "," + j + "," + nametable));
 
                     rowsInline.add(rowInline2);
                     execute(new_message);
@@ -404,7 +414,7 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
                 case "/find_add": {
-                   String id = data[1];
+                    String id = data[1];
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     // Add it to the message
@@ -416,15 +426,15 @@ public class Bot extends TelegramLongPollingBot {
                             .setText("Список дополнений")
                             .setReplyMarkup(markupInline)
                             .enableMarkdown(true);
-                            List<Additions> adds = run.query(Db.connecti, "SELECT * FROM additions Where id_game  =" +  id, h);
-                            if(adds.size()<1)
-                                msg2.setText("Дополнений для данной игры нет");
-                            for (Additions add : adds) {
-                                List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                                rowInline.add(new InlineKeyboardButton().setText(add.getName()).setCallbackData("/send_add," + add.getId()));
-                                rowsInline.add(rowInline);
-                            }
-                            execute(msg2);
+                    List<Additions> adds = run.query(Db.connecti, "SELECT * FROM additions Where id_game  =" + id, h);
+                    if (adds.size() < 1)
+                        msg2.setText("Дополнений для данной игры нет");
+                    for (Additions add : adds) {
+                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                        rowInline.add(new InlineKeyboardButton().setText(add.getName()).setCallbackData("/send_add," + add.getId()));
+                        rowsInline.add(rowInline);
+                    }
+                    execute(msg2);
                     break;
                 }
 
@@ -466,7 +476,7 @@ public class Bot extends TelegramLongPollingBot {
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
-                    int i=0, j=0, k=3;
+                    int i = 0, j = 0, k = 3;
                     EditMessageText new_message = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
@@ -477,7 +487,7 @@ public class Bot extends TelegramLongPollingBot {
 
                     List<Games> games = run.query(Db.connecti, "SELECT * FROM Games where id_universe =" + id_uni, h);
                     for (Games game : games) {
-                        if(i>=j && i<k){
+                        if (i >= j && i < k) {
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
                             rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
                             rowsInline.add(rowInline);
@@ -486,10 +496,10 @@ public class Bot extends TelegramLongPollingBot {
 
                     }
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                    if(j>=5)
-                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back,"+id_uni+"," + k+"," + j+","+"Universe"));
-                    if(k<games.size())
-                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," +id_uni+","+ k+"," + j+","+"Universe"));
+                    if (j >= 5)
+                        rowInline2.add(new InlineKeyboardButton().setText("Назад").setCallbackData("/back," + id_uni + "," + k + "," + j + "," + "Universe"));
+                    if (k < games.size())
+                        rowInline2.add(new InlineKeyboardButton().setText("Вперед").setCallbackData("/forward," + id_uni + "," + k + "," + j + "," + "Universe"));
                     rowsInline.add(rowInline2);
                     execute(new_message);
                     break;
@@ -498,7 +508,7 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
                 case "/user_games": {
-                     Statement statement = null;
+                    Statement statement = null;
                     String sql;
                     int id_game = 1000;
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
@@ -510,24 +520,23 @@ public class Bot extends TelegramLongPollingBot {
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
 
-                  sql = "SELECT id_game FROM user_games Where id_user  =" +  u_id;
+                    sql = "SELECT id_game FROM user_games Where id_user  =" + u_id;
                     try {
                         statement = Db.connecti.createStatement();
                         ResultSet resultSet = statement.executeQuery(sql);
                         while (resultSet.next()) {
                             id_game = resultSet.getInt("id_game");
-                            List<Games> games = run.query(Db.connecti, "SELECT * FROM games Where id  =" +  id_game, h);
+                            List<Games> games = run.query(Db.connecti, "SELECT * FROM games Where id  =" + id_game, h);
                             for (Games game : games) {
                                 SendMessage msg2 = new SendMessage()
                                         .setChatId(chat_id)
-                                        .setText(game.getName()+"\n"+game.getLink()+"\n")
+                                        .setText(game.getName() + "\n" + game.getLink() + "\n")
                                         .setReplyMarkup(markupInline)
-                               .enableMarkdown(true);
+                                        .enableMarkdown(true);
                                 rowInline.clear();
 
 
-
-                                rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId()+","+u_id));
+                                rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId() + "," + u_id));
                                 execute(msg2);
                             }
                         }
@@ -538,16 +547,15 @@ public class Bot extends TelegramLongPollingBot {
                     break;
 
 
-
                 }
 
 
                 case "/del": {
                     Statement statement = null;
                     String sql;
-                    int id_game =Integer.parseInt(data[1]);
-                    int user_id =Integer.parseInt(data[2]);
-                    String name  = "aaa";
+                    int id_game = Integer.parseInt(data[1]);
+                    int user_id = Integer.parseInt(data[2]);
+                    String name = "aaa";
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
@@ -557,21 +565,21 @@ public class Bot extends TelegramLongPollingBot {
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
 
-                    sql = "SELECT name FROM games Where  id =" +id_game ;
+                    sql = "SELECT name FROM games Where  id =" + id_game;
                     try {
                         statement = Db.connecti.createStatement();
-                            ResultSet resultSet = statement.executeQuery(sql);
+                        ResultSet resultSet = statement.executeQuery(sql);
                         while (resultSet.next()) {
                             name = resultSet.getString("name");
 
-                            statement.executeUpdate("DELETE FROM user_games Where id_game ="+id_game +" and id_user=" +user_id);
+                            statement.executeUpdate("DELETE FROM user_games Where id_game =" + id_game + " and id_user=" + user_id);
 
-                                SendMessage msg2 = new SendMessage()
-                                        .setChatId(chat_id)
-                                        .setText("Игра *"+name+ "* удалена из вашего списка.")
-                                        .setReplyMarkup(markupInline)
-                                        .enableMarkdown(true);
-                               execute(msg2);
+                            SendMessage msg2 = new SendMessage()
+                                    .setChatId(chat_id)
+                                    .setText("Игра *" + name + "* удалена из вашего списка.")
+                                    .setReplyMarkup(markupInline)
+                                    .enableMarkdown(true);
+                            execute(msg2);
 
                         }
 
@@ -579,7 +587,6 @@ public class Bot extends TelegramLongPollingBot {
                         throwables.printStackTrace();
                     }
                     break;
-
 
 
                 }
