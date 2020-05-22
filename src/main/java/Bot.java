@@ -393,10 +393,11 @@ public class Bot extends TelegramLongPollingBot {
                         rowInline.clear();
                         if(what.equals("user"))
                             rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId() + "," + u_id));
-                        else{
+                        else
                             rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
-                            rowInline2.add(new InlineKeyboardButton().setText("Поиск дополнений").setCallbackData("/find_add," + game.getId()));
-                        }
+
+                        rowInline2.add(new InlineKeyboardButton().setText("Поиск дополнений").setCallbackData("/find_add," + game.getId()));
+
                         execute(msg2);
                     }
                     break;
