@@ -253,7 +253,7 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                         if (i >= j && i < k) {
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()+",genre"));
                             rowsInline.add(rowInline);
                         }
                         i++;
@@ -300,7 +300,7 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                         if (i >= j && i < k) {
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()+",back"));
                             rowsInline.add(rowInline);
                         }
                         i++;
@@ -346,7 +346,7 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                         if (i >= j && i < k) {
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()+",forward"));
                             rowsInline.add(rowInline);
                         }
                         i++;
@@ -494,7 +494,7 @@ public class Bot extends TelegramLongPollingBot {
                     for (Games game : games) {
                         if (i >= j && i < k) {
                             List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()));
+                            rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()+",universe"));
                             rowsInline.add(rowInline);
                         }
                         i++;
