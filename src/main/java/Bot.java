@@ -557,14 +557,14 @@ public class Bot extends TelegramLongPollingBot {
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
 
-                    sql = "SELECT name FROM user_games Where id_user  =" +  user_id+ " and id =" +id_game ;
+                    sql = "SELECT name FROM games Where  id =" +id_game ;
                     try {
                         statement = Db.connecti.createStatement();
                             ResultSet resultSet = statement.executeQuery(sql);
                         while (resultSet.next()) {
                             name = resultSet.getString("name");
 
-                         run.query(Db.connecti, "DELETE FROM user_games Where id_game ="+id_game +" and id_user=" +user_id, h);
+                            statement.executeUpdate("DELETE FROM user_games Where id_game ="+id_game +" and id_user=" +user_id);
 
                                 SendMessage msg2 = new SendMessage()
                                         .setChatId(chat_id)
