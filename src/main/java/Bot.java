@@ -179,10 +179,11 @@ public class Bot extends TelegramLongPollingBot {
                     sql = "INSERT INTO users (id, tg_id,nickname) VALUES  (" + u_id + "," + u_id + ", '" + user_username + "')";
                     try {
                         statement = Db.connecti.createStatement();
-                        statement.executeQuery(sql);
+                        statement.executeUpdate(sql);
+                        i = 0;
                         newM2.setText("Аккаунт добавлен.");
                         execute(newM2);
-                        i = 0;
+
                     } catch (SQLException throwables) {
 
                         throwables.printStackTrace();
