@@ -367,6 +367,7 @@ public class Bot extends TelegramLongPollingBot {
 
                 case "/send_game": {
                     String id_game = data[1];
+                    String what = data[2];
 
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
@@ -389,8 +390,12 @@ public class Bot extends TelegramLongPollingBot {
                                 .setText(game.toString())
                                 .setReplyMarkup(markupInline);
                         rowInline.clear();
-                        rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
-                        rowInline2.add(new InlineKeyboardButton().setText("Поиск дополнений").setCallbackData("/find_add," + game.getId()));
+                        if(what.equals("user"))
+                            rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId() + "," + u_id));
+                        else{
+                            rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
+                            rowInline2.add(new InlineKeyboardButton().setText("Поиск дополнений").setCallbackData("/find_add," + game.getId()));
+                        }
                         execute(msg2);
                     }
                     break;
@@ -513,13 +518,17 @@ public class Bot extends TelegramLongPollingBot {
                     int id_game = 1000;
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                    rowsInline.add(rowInline);
+
+
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-
+                    SendMessage msg2 = new SendMessage()
+                            .setChatId(chat_id)
+                            .setText("Ваши игры: ")
+                            .setReplyMarkup(markupInline)
+                            .enableMarkdown(true);
                     sql = "SELECT id_game FROM user_games Where id_user  =" + u_id;
                     try {
                         statement = Db.connecti.createStatement();
@@ -528,19 +537,17 @@ public class Bot extends TelegramLongPollingBot {
                             id_game = resultSet.getInt("id_game");
                             List<Games> games = run.query(Db.connecti, "SELECT * FROM games Where id  =" + id_game, h);
                             for (Games game : games) {
-                                SendMessage msg2 = new SendMessage()
-                                        .setChatId(chat_id)
-                                        .setText(game.getName() + "\n" + game.getLink() + "\n")
-                                        .setReplyMarkup(markupInline)
-                                        .enableMarkdown(true);
-                                rowInline.clear();
 
 
-                                rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId() + "," + u_id));
-                                execute(msg2);
+                                List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                                rowInline.add(new InlineKeyboardButton().setText(game.getName()).setCallbackData("/send_game," + game.getId()+",user"));
+
+                                rowsInline.add(rowInline);
+
                             }
                         }
 
+                        execute(msg2);
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
