@@ -152,10 +152,11 @@ public class Bot extends TelegramLongPollingBot {
                     sql = "INSERT INTO user_games (id_user, id_game) VALUES (" + u_id + ",'" + id_game + "')";
                     try {
                         statement = Db.connecti.createStatement();
-                        statement.executeQuery(sql);
+                        statement.executeUpdate(sql);
+                        i=0;
                         newM2.setText("Игра добавлена.");
                         execute(newM2);
-                        i = 0;
+
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
 
