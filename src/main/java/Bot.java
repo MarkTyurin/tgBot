@@ -160,13 +160,11 @@ public class Bot extends TelegramLongPollingBot {
                         newM2.setText("Не удалось добавить игру.");
                         execute(newM2);
                     }
-
                     break;
 
                 }
 
                 case "/user": {
-
                     SendMessage newM2 = new SendMessage()
                             .enableMarkdown(true)
                             .setChatId(chat_id);
@@ -225,17 +223,12 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
 
-
                 case "/find_genre": {
                     String id_genre = data[1];
                     QueryRunner run = new QueryRunner();
                     ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
-
-
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-
-
                     // Add it to the message
                     markupInline.setKeyboard(rowsInline);
                     int i=0, j=0, k=3;
@@ -410,9 +403,6 @@ public class Bot extends TelegramLongPollingBot {
 
                 }
 
-
-
-
                 case "/find_add": {
                    String id = data[1];
                     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
@@ -434,12 +424,7 @@ public class Bot extends TelegramLongPollingBot {
                             }
                             execute(msg2);
                     break;
-
-
-
                 }
-
-
 
                 case "/universe": {
                     QueryRunner run = new QueryRunner();
@@ -540,7 +525,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
 
-                                rowInline.add(new InlineKeyboardButton().setText("Удалить  из списка.").setCallbackData("/del," + game.getId()+","+u_id));
+                                rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId()+","+u_id));
                                 execute(msg2);
                             }
                         }
