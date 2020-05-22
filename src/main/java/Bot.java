@@ -417,6 +417,8 @@ public class Bot extends TelegramLongPollingBot {
                             .setReplyMarkup(markupInline)
                             .enableMarkdown(true);
                             List<Additions> adds = run.query(Db.connecti, "SELECT * FROM additions Where id_game  =" +  id, h);
+                            if(adds.size()<1)
+                                msg2.setText("Дополнений для данной игры нет");
                             for (Additions add : adds) {
                                 List<InlineKeyboardButton> rowInline = new ArrayList<>();
                                 rowInline.add(new InlineKeyboardButton().setText(add.getName()).setCallbackData("/send_add," + add.getId()));
