@@ -540,7 +540,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
 
-                                rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId()+","+u_id));
+                                rowInline.add(new InlineKeyboardButton().setText("Удалить  из списка.").setCallbackData("/del," + game.getId()+","+u_id));
                                 execute(msg2);
                             }
                         }
