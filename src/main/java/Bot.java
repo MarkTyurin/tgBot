@@ -380,7 +380,7 @@ public class Bot extends TelegramLongPollingBot {
                                 .setReplyMarkup(markupInline);
                         rowInline.clear();
                         rowInline.add(new InlineKeyboardButton().setText("Добавить в мой список").setCallbackData("/add," + game.getId()));
-                        rowInline2.add(new InlineKeyboardButton().setText("Вывести дополнения").setCallbackData("/find_add," + game.getId()));
+                        rowInline2.add(new InlineKeyboardButton().setText("Поиск дополнений").setCallbackData("/find_add," + game.getId()));
                         execute(msg2);
                     }
                     break;
@@ -530,6 +530,49 @@ public class Bot extends TelegramLongPollingBot {
                                 rowInline.add(new InlineKeyboardButton().setText("Удалить из списка.").setCallbackData("/del," + game.getId()+","+u_id));
                                 execute(msg2);
                             }
+                        }
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    break;
+
+
+
+                }
+
+
+                case "/del": {
+                    Statement statement = null;
+                    String sql;
+                    int id_game =Integer.parseInt(data[1]);
+                    int user_id =Integer.parseInt(data[2]);
+                    String name  = "aaa";
+                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                    rowsInline.add(rowInline);
+                    // Add it to the message
+                    markupInline.setKeyboard(rowsInline);
+                    QueryRunner run = new QueryRunner();
+                    ResultSetHandler<List<Games>> h = new BeanListHandler<Games>(Games.class);
+
+                    sql = "SELECT name FROM user_games Where id_user  =" +  user_id+ " and id =" +id_game ;
+                    try {
+                        statement = Db.connecti.createStatement();
+                            ResultSet resultSet = statement.executeQuery(sql);
+                        while (resultSet.next()) {
+                            name = resultSet.getString("name");
+
+                         run.query(Db.connecti, "DELETE FROM user_games Where id_game ="+id_game +" and id_user=" +user_id, h);
+
+                                SendMessage msg2 = new SendMessage()
+                                        .setChatId(chat_id)
+                                        .setText("Игра *"+name+ "* удалена из вашего списка.")
+                                        .setReplyMarkup(markupInline)
+                                        .enableMarkdown(true);
+                               execute(msg2);
+
                         }
 
                     } catch (SQLException throwables) {
