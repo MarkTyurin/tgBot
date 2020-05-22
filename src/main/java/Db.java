@@ -4,9 +4,9 @@ import java.sql.SQLException;
 
 public class Db {
 
-    static final String DB_URL = "jdbc:postgresql://ec2-54-247-89-181.eu-west-1.compute.amazonaws.com:5432/d4k73hbn3que92";
-    static final String USER = "akuaihbrfdperl";
-    static final String PASS = "e240eb73da4d572576a41ee28fe9dab1ace5ec37bb29532e3489618f84607bd0";
+    static final String DB_URL = "jdbc:postgresql://ec2-54-247-103-43.eu-west-1.compute.amazonaws.com:5432/d9g3ga3d10tldu";
+    static final String USER = "qrbolgzpyhhdit";
+    static final String PASS = "860e503455c28abbef5a7f12617bb16ae201f96e3b81ed4c0846e57700087cae";
 
     public static Connection connecti;
     static {
